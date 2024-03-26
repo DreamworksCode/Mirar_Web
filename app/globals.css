@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.footer{
+  background-color: #74e5e6;
+  text-align: center;
+  color:#1d7879;
+  padding: 20px 0;
+  /* position: fixed; */
+  width: 100%;
+  bottom:0;
+}
+
+body{
+  overflow-x: hidden;
+}
+
+
+.chat-message{
+  width: 45%;
+  border-radius: 10px;
+  padding: 10px;
+  
+}
+
+.bot{
+  border-top-left-radius: 0;
+  background-color: #F5F5F5;
+  width: auto;
+  max-width: 45%;
+  /* background-color: grey; */
+  align-self: flex-start;
+}
+
+.user{
+  background: linear-gradient(to right,#367FEA,#74E5E6);
+  border-bottom-right-radius: 0;
+  width:auto;
+  max-width: 45%;
+  align-self: flex-end;
+  color:white
+}
+
+.message_time{
+  background-color: white;
+  padding: 5px 10px;
+  /* width: 20%; */
+  opacity: 0.3;
+  font-size: 15px;
+}
+
+.bot-time{
+  align-self: flex-start;
+}
+
+.user-time{
+  align-self: flex-end;
+}

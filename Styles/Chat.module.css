@@ -1,0 +1,276 @@
+.container{
+    background: linear-gradient(49deg, #74E5E6,#367FEA);
+    /* height: 100vh; */
+    width: 100vw;
+    padding: 40px;
+}
+
+.navbar_container{
+    border:1px solid white;
+    padding: 10px 40px;
+    border-radius: 80px;;
+    width:80%;
+    margin:auto;
+    display: flex;
+    justify-content: space-between;
+    background-color: #00000033;
+}
+
+.mirar_logo{
+    padding-top:5px;
+    width:180px;
+    height: 40px;;
+}
+
+.nav_items{
+    display: flex;
+    justify-content: space-evenly;
+}
+.nav_items div{
+    height: 25px;
+    width:25px;
+    margin: 0 10px;
+    padding-top:5px;
+}
+
+
+
+/* Chabot styling */
+.chatbot_container{
+    height: 500px;;
+    width:80%;
+    margin:auto;
+    margin-top:40px;
+    position: relative;
+    /* background-color: white; */
+    /* background-color: blue; */
+}
+
+.top_container{
+
+    height: 10%;
+    padding:0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: #74E5E6; */    
+    background: linear-gradient(to right , rgb(221, 219, 219), white);
+
+    /* background-color: white;
+    
+backdrop-filter: blur(40px); */
+    /* border:1px solid grey; */;
+    background-color: #fff;
+
+}
+
+.left_items{
+    padding:4px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:10px;
+}
+
+.language_image{
+    height: 25px;
+    cursor: pointer;
+    width: 25px;
+}
+
+.main_container{
+    background-color: white;
+    height: 75%;
+    overflow: auto;
+}
+
+.bottom_container{
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: linear-gradient(to right , rgb(221, 219, 219), white);
+
+}
+
+.pin_image{
+    width: 15%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pin{
+    width: 30px;
+    height: 20px;
+}
+
+.text_input{
+    width: 80%;
+}
+
+.text_input input{
+    padding: 6px 20px;
+    width: 100%;
+    border-radius: 80px;
+    box-shadow: 0 0 5px dodgerblue;
+}
+
+.text_input input:focus{
+    outline: none;
+    border: none;
+}
+
+.internet_image{
+    width: 20%;
+    text-align: center;
+}
+
+
+.text_container{
+    padding: 10px 40px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.audio_input_container{
+    height: 500px;
+}
+
+.visualizer{
+    padding: 20px;
+    padding-top:50px;
+    margin:auto;
+    width: 60%;
+    height: 50%;
+}
+
+.user_voice_listening{
+    /* background-color: red; */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user_voice_listening p{
+    font-size: 30px;
+    color:white;
+    font-weight: 700;
+}
+
+
+.control_box{
+    padding: 10px 20px;
+    margin: auto;
+    width: 500px;
+    height: 40%;
+    background-color: #367FEA;
+    color:white;
+    border-radius: 20px;
+}
+
+
+.control_box h1{
+    text-align: center;
+}
+
+.controller_button_container{
+    padding:20px 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.refresh, .cross{
+    height: 30px;
+    width: 30px;
+}
+
+.refresh:hover, .cross:hover, .mic:hover{
+    transform: scale(1.05);
+}
+/* .mic_container{
+    border:5px  solid white;
+    border-radius: 50%;
+} */
+
+.mic{
+    height: 45px;
+    width: 45px;
+}
+
+
+.influencerImage{
+    border-radius: 50%;
+    width: 49px;
+    height: 49px;
+}
+
+
+.language_box{
+    /* background-color: blue; */
+    background-color: #fff;
+    width:40%;
+    height: 75%;
+    overflow: auto;
+    border: 2px solid grey;
+    position: absolute;
+    text-align: center;
+    padding-top:20px;
+    top:0;
+    top:10%;
+    right: 0;
+}
+
+.language_box h1{
+    padding:10px 5px;
+    margin:auto;
+    width: 80%;
+    /* border-radius: 20px; */
+    /* border: 1px solid grey; */
+}
+
+.language_box button{
+    background-color: #F5F5F5;
+    width:80%;
+    margin:8px auto;
+    padding: 10px 5px;
+    border-radius: 8px;
+    /* border: 1px solid grey; */
+    text-align: start;
+}
+
+.language_box button:hover{
+    background:linear-gradient(to right, #367FEA,#74E5E6);
+    color:white;
+}
+
+
+@media (max-width:701px) and (min-width:600px) {
+    .mirar_logo{
+        width: 140px;
+        height: 30px;
+    }
+
+    .nav_items div{
+        height: 20px;
+        width: 20px;;
+    }
+    
+}
+
+@media (max-width:600px) {
+    .navbar_container{
+        display: none;
+    }
+
+    .chatbot_container{
+        height: 100vh;
+        width: 100%;
+        margin:0;
+    }
+    
+} 

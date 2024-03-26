@@ -1,0 +1,81 @@
+.welcome_content{
+    position: absolute;
+    top:20%;
+    right:15%;
+    text-align: center;
+    font-size: 30px;
+    color:white;
+}
+
+.welcome_content div button{
+    width:100%;
+    background: linear-gradient(to right, #367fea,#74e5e6);
+    padding: 10px;
+    border-radius: 40px;
+    color:white;
+    font-size: 22px;
+}
+
+.image{
+    width: 200px;
+    height: 200px;
+}
+
+
+.welcome_content div button:hover{
+    transform: scale(1.01);
+}
+
+/* mobile css  */
+.mobile_welcome_content{
+    /* background-color: #367fea; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    color:white;
+    width: 100%;;
+    position: absolute;
+    top:0;
+   
+}
+
+.mobile_image{
+    height: 200px;
+    width:200px;
+}
+
+.start_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    padding: 10px;
+    color:white;
+    font-size: 22px;
+    position: absolute;
+    bottom:0;
+    
+}
+
+.start_button button{
+    width: 70%;
+    padding: 10px 0;
+    background: linear-gradient(to right,#367fea,#74e5e6);
+    border-radius: 40px;
+}
+
+
+@media (min-width:1590px) {
+    .welcome_content{
+        top:40%;
+    }
+}
+
+@media (max-width:1080px) {
+    .welcome_content{
+        top:6%;
+        width: 200px;;
+    }
+}

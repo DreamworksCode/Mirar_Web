@@ -22,7 +22,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div className="md:hidden lg:hidden xl:hidden 2xl:hidden">
+      <div className="md:hidden lg:hidden xl:hidden 2xl:hidden"> 
         <div>
           <Image src={WelcomeMobile} alt="Welcome image mobile" />
         </div>
@@ -33,7 +33,7 @@ const page = () => {
           </div>
         </div>
         <div className={styles.start_button}>
-            <Link href="/chatWeb"><button>Start</button></Link>
+            <button><Link href="/chatWeb">Start</Link></button>
         </div>
       </div>
     </>

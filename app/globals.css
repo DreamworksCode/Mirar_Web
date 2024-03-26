@@ -78,3 +78,16 @@ body{
 .user-time{
   align-self: flex-end;
 }
+
+@media (max-width:600px) {
+  .message_time{
+    font-size: 12px;
+  }
+  .bot{
+    max-width: 75%;
+  }
+  .user{
+    max-width: 75%;
+  }
+  
+} 

@@ -266,11 +266,15 @@ backdrop-filter: blur(40px); */
     .navbar_container{
         display: none;
     }
+    .container{
+        padding:0;
+        height: 90vh;
+    }
 
     .chatbot_container{
         height: 100vh;
-        width: 100%;
-        margin:0;
+        width: 100vw;
+        margin-top:0;
     }
     
 } 

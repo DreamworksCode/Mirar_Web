@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Share from "@/public/Share icon.png";
 import Fave from "@/public/Fave icon.png";
@@ -8,9 +9,13 @@ import image3 from "@/public/OF icon.png";
 import Styles from "@/Styles/Profile.module.css";
 import Link from "next/link";
 import API from "./api";
+import { useEffect } from "react";
 
 export default  async function Home() {
-  // const authToken=localStorage.getItem('token');
+  let authToken;
+  useEffect(()=>{
+    authToken=localStorage.getItem('token');
+  },[]);
   let content;
   const influencer = "65f91744da497c8e1086c8af";
     try {
@@ -98,7 +103,7 @@ export default  async function Home() {
           </div>
           <div className={Styles.images}>
             <Image src={OF} alt="only fans image"/>
-          </div> */}
+          </div> */} 
           {valueOfImage0 ? (
             <div className={Styles.images}>
               <a href={content.socialInfo[indexOfImage0].link} target="_blank">
@@ -158,7 +163,7 @@ export default  async function Home() {
         <div className={Styles.link_content}>{content.bio?content.bio:"To be added later..."}</div>
       </div>
       <div className={Styles.BUTTON}>
-        <Link href="/signin">
+        <Link href={authToken?'/welcome':'/signin'}>
           <button className={Styles.starting_button}>Start</button>
         </Link>
       </div>

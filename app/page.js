@@ -59,7 +59,7 @@ export default  async function Home() {
 
 
   return (
-    <div>
+    <div className={Styles.profile_container}>
       <div className=" TOP_BOX_PROFILE bg-[linear-gradient(180deg,#74e5e6,#367fea)] h-[220px]">
         {/* <div className="absolute top-[145px] ml-24">
           <Image src={content.avatarImageUrl} height={150} width={150} alt="Profile image" />

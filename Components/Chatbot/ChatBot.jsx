@@ -367,7 +367,7 @@ const Chatbot = () => {
             <div className={styles.left_items}>
               <h1> &lt; </h1>
               <div>
-                <Image
+                <Image 
                   src={
                     influencerDetails.avatarImageUrl
                       ? influencerDetails.avatarImageUrl

@@ -10,11 +10,8 @@ import Styles from "@/Styles/Profile.module.css";
 import Link from "next/link";
 import API from "./api";
 // import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 
 export default async function Home() {
-  const searchParams = useSearchParams();
-  const search = searchParams.get("id");
   console.log(search);
   let authToken;
   // useEffect(() => {

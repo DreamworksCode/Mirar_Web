@@ -76,6 +76,8 @@ const Chatbot = () => {
 
   const handleCancelButtonClick = () => {
     setIsChatOpen(true);
+    stopListening();
+    setTextInput(null);
   };
 
   const elevenLabs = useCallback(
@@ -304,38 +306,38 @@ const Chatbot = () => {
     stopListening();
     console.log("StopListening Reached");
     // const messageToSendFromAudio = transcript.trim();
-    if (textInput) {
-      const message_object = {
-        question: textInput,
-        answer: "...",
-      };
+    // if (textInput) {
+    //   const message_object = {
+    //     question: textInput,
+    //     answer: "...",
+    //   };
 
-      setChatMessages([...chatMessages, message_object]);
+    //   setChatMessages([...chatMessages, message_object]);
 
-      console.log("Message is: ", textInput);
-      //Construct the request body
+    //   console.log("Message is: ", textInput);
+    //   //Construct the request body
 
-      const formData = new FormData();
-      formData.set("influencerId", influencer);
-      formData.set("questions", textInput);
+    //   const formData = new FormData();
+    //   formData.set("influencerId", influencer);
+    //   formData.set("questions", textInput);
 
-      try {
-        const response = await API.postAPICalling(
-          "/users/askQuestionByLanguageNew",
-          formData,
-          authToken
-        );
-        elevenLabs(response);
-        setChatMessages([...chatMessages, response]);
+    //   try {
+    //     const response = await API.postAPICalling(
+    //       "/users/askQuestionByLanguageNew",
+    //       formData,
+    //       authToken
+    //     );
+    //     elevenLabs(response);
+    //     setChatMessages([...chatMessages, response]);
 
-        setValidation(false);
-        console.log(response);
-      } catch (error) {
-        console.log("Error : ", error);
-      }
-      // Reset the transcript after sending the message
-      // resetTranscript();
-    }
+    //     setValidation(false);
+    //     console.log(response);
+    //   } catch (error) {
+    //     console.log("Error : ", error);
+    //   }
+    //   // Reset the transcript after sending the message
+    //   // resetTranscript();
+    // }
   }, [
     transcript,
     setAudio,
@@ -479,8 +481,7 @@ const Chatbot = () => {
                 <button type="submit" disabled={validation}>
                   <Image
                     src={newMessage.trim("").length ? sent : RecordButton}
-                    width={50}
-                    height={50}
+                    className={styles.mic}
                     alt="Submit image"
                   />
                 </button>

@@ -150,7 +150,7 @@ backdrop-filter: blur(40px); */
 
 .visualizer{
     padding: 20px;
-    padding-top:50px;
+    padding-top:20%;
     margin:auto;
     width: 60%;
     height: 70%;
@@ -209,8 +209,8 @@ backdrop-filter: blur(40px); */
 } */
 
 .mic{
-    height: 45px;
-    width: 45px;
+    height: 50px;
+    width: 50px;
 }
 
 
@@ -318,6 +318,7 @@ backdrop-filter: blur(40px); */
         bottom:0;
     }
     .visualizer{
+        padding-top:20%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -346,6 +347,10 @@ backdrop-filter: blur(40px); */
     .pin{
         width: 25px;
         height: 30px;
+    }
+    .mic{
+        height: 40px;
+        width: 40px;
     }
 }  
 

@@ -12,7 +12,6 @@ import API from "./api";
 // import { useEffect } from "react";
 
 export default async function Home() {
-  console.log(search);
   let authToken;
   // useEffect(() => {
   //   authToken = localStorage.getItem("token");

@@ -14,8 +14,8 @@ const page = () => {
         </div>
         <div className={styles.welcome_content}>
           <div>Welcome to</div>
-          <div className={styles.image}>
-            <Image src={Logo} alt="Mirar logo" />
+          <div >
+            <Image className={styles.image} src={Logo} alt="Mirar logo" />
           </div>
           <div>
             <Link href="/chatWeb"><button>Start</button></Link>
@@ -30,7 +30,7 @@ const page = () => {
           <div>Welcome to</div>
           <div className={styles.mobile_image}>
             <Image src={Logo} alt="Mirar logo mobile" />
-          </div>
+          </div> 
         </div>
         <div className={styles.start_button}>
             <button><Link href="/chatWeb">Start</Link></button>

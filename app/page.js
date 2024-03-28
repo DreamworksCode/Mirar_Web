@@ -9,54 +9,54 @@ import image3 from "@/public/OF icon.png";
 import Styles from "@/Styles/Profile.module.css";
 import Link from "next/link";
 import API from "./api";
-import { useEffect } from "react";
+// import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default  async function Home() {
+export default async function Home() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("id");
+  console.log(search);
   let authToken;
-  useEffect(()=>{
-    authToken=localStorage.getItem('token');
-  },[]);
+  // useEffect(() => {
+  //   authToken = localStorage.getItem("token");
+  // }, []);
   let content;
   const influencer = "65f91744da497c8e1086c8af";
-    try {
-      const response = await API.getAPICalling(
-        `/auth/getInfluencer/${influencer}`
+  try {
+    const response = await API.getAPICalling(
+      `/auth/getInfluencer/${influencer}`
     );
     content = response.data;
     console.log(response.data);
   } catch (error) {
     console.log(error);
   }
+
   const images = [image0, image1, image2, image3];
-  let valueOfImage0=0;
-  let valueOfImage1=0;
-  let valueOfImage2=0;
-  let valueOfImage3=0;
-  let indexOfImage0=null;
-  let indexOfImage1=null;
-  let indexOfImage2=null;
-  let indexOfImage3=null;
+  let valueOfImage0 = 0;
+  let valueOfImage1 = 0;
+  let valueOfImage2 = 0;
+  let valueOfImage3 = 0;
+  let indexOfImage0 = null;
+  let indexOfImage1 = null;
+  let indexOfImage2 = null;
+  let indexOfImage3 = null;
 
- for(let i=0; i<4;i++){
-  if(content.socialInfo[i] && content.socialInfo[i].type==0){
-    valueOfImage0=1;
-    indexOfImage0=i;
+  for (let i = 0; i < 4; i++) {
+    if (content.socialInfo[i] && content.socialInfo[i].type == 0) {
+      valueOfImage0 = 1;
+      indexOfImage0 = i;
+    } else if (content.socialInfo[i] && content.socialInfo[i].type == 1) {
+      valueOfImage1 = 1;
+      indexOfImage1 = i;
+    } else if (content.socialInfo[i] && content.socialInfo[i].type == 2) {
+      valueOfImage2 = 1;
+      indexOfImage2 = i;
+    } else if (content.socialInfo[i] && content.socialInfo[i].type == 3) {
+      valueOfImage3 = 1;
+      indexOfImage3 = i;
+    }
   }
-  else if(content.socialInfo[i] && content.socialInfo[i].type==1){
-    valueOfImage1=1;
-    indexOfImage1=i;
-  }
-  else if(content.socialInfo[i] && content.socialInfo[i].type==2){
-    valueOfImage2=1;
-    indexOfImage2=i;
-  }
-  else if(content.socialInfo[i] && content.socialInfo[i].type==3){
-    valueOfImage3=1;
-    indexOfImage3=i;
-  }
- }
-
-
 
   return (
     <div className={Styles.profile_container}>
@@ -103,16 +103,20 @@ export default  async function Home() {
           </div>
           <div className={Styles.images}>
             <Image src={OF} alt="only fans image"/>
-          </div> */} 
+          </div> */}
           {valueOfImage0 ? (
             <div className={Styles.images}>
               <a href={content.socialInfo[indexOfImage0].link} target="_blank">
-                <Image src={image0} alt="TikTok image"/>
+                <Image src={image0} alt="TikTok image" />
               </a>
             </div>
           ) : (
             <div className={Styles.images}>
-              <Image src={image0} className={Styles.blurred_image} alt="TikTok image" />
+              <Image
+                src={image0}
+                className={Styles.blurred_image}
+                alt="TikTok image"
+              />
             </div>
           )}
 
@@ -124,7 +128,11 @@ export default  async function Home() {
             </div>
           ) : (
             <div className={Styles.images}>
-              <Image src={image1} className={Styles.blurred_image} alt="instagram image" />
+              <Image
+                src={image1}
+                className={Styles.blurred_image}
+                alt="instagram image"
+              />
             </div>
           )}
 
@@ -136,7 +144,11 @@ export default  async function Home() {
             </div>
           ) : (
             <div className={Styles.images}>
-              <Image src={image2} className={Styles.blurred_image} alt="X image" />
+              <Image
+                src={image2}
+                className={Styles.blurred_image}
+                alt="X image"
+              />
             </div>
           )}
 
@@ -148,7 +160,11 @@ export default  async function Home() {
             </div>
           ) : (
             <div className={Styles.images}>
-              <Image src={image3} className={Styles.blurred_image} alt="Only Fans image" />
+              <Image
+                src={image3}
+                className={Styles.blurred_image}
+                alt="Only Fans image"
+              />
             </div>
           )}
 
@@ -160,10 +176,22 @@ export default  async function Home() {
             </div>
           ))} */}
         </div>
-        <div className={Styles.link_content}>{content.bio?content.bio:"To be added later..."}</div>
+        <div className={Styles.link_content}>
+          {content.bio ? content.bio : "To be added later..."}
+        </div>
+      </div>
+      <div className={Styles.video_container}>
+        <iframe
+        className={Styles.video}
+          src="https://www.youtube.com/embed/YphL3Whh5B0?si=J3VZ9NXRCRi7ua8u"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
       </div>
       <div className={Styles.BUTTON}>
-        <Link href={authToken?'/welcome':'/signin'}>
+        <Link href={authToken ? "/welcome" : "/signin"}>
           <button className={Styles.starting_button}>Start</button>
         </Link>
       </div>

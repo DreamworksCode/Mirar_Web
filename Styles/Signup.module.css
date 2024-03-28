@@ -89,3 +89,22 @@
     width: 100%;
   }
 }
+
+@media (min-width:1600px) {
+  .form{
+    padding:200px 0;
+    font-size: 30px;;
+  }
+  .form_Container{
+    padding:80px 20 20px;
+  }
+  .input{
+    width:350px;
+    margin:20px 10px 10px;
+  }
+  .button button{
+    margin-top:20px;
+    width: 350px;
+  }
+  
+}

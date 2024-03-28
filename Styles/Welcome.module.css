@@ -70,7 +70,16 @@
 @media (min-width:1590px) {
     .welcome_content{
         top:40%;
+        font-size: 60px;
     }
+    .image{
+        width: 400px;
+        height: 400px;
+    }
+    .welcome_content div button{
+        font-size: 44px;
+    }
+
 }
 
 @media (max-width:1080px) {

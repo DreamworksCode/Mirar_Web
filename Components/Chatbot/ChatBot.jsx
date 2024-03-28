@@ -1,5 +1,11 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback,useLayoutEffect } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import styles from "@/Styles/Chat.module.css";
 import Language from "@/public/Chat/language.png";
 import CloseCircle from "@/public/Chat/CloseCircle.png";
@@ -14,10 +20,11 @@ import API from "@/app/api";
 import UseSpeechToText from "../useSpeechToText";
 import LoadingAnimation from "../Animations/LoadingAnimations";
 import AudioElevenAnalyzer from "./AudioElevenAnalyzer";
+import Loader from "../Animations/Loader";
 
 const Chatbot = () => {
   const languageRef = useRef();
-  const divRef=useRef(null);
+  const divRef = useRef(null);
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(true);
@@ -30,13 +37,12 @@ const Chatbot = () => {
   const [validation, setValidation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [handleEmptyText, setHandleEmptyText] = useState(false);
+  const [isChatLoaded,setIsChatLoaded]=useState(false);
+  const [isLanguagesLoaded,setIsLanguagesLoaded]=useState(false);
   const { isListening, transcript, startListening, stopListening } =
     UseSpeechToText({ continuous: true });
-    let authToken;
-    useEffect(()=>{
-      authToken = localStorage.getItem("token");
-    })
-  const influencer = "65f91744da497c8e1086c8af";
+  const authToken = localStorage.getItem("token");
+  const influencer = "65fb71d1da497c8e1087a965";
 
   useEffect(() => {
     setTextInput(transcript);
@@ -47,7 +53,6 @@ const Chatbot = () => {
     setIsChatOpen(true);
   };
 
-  
   const elevenLabs = useCallback(
     (apiResponse) => {
       setIsLoading(true);
@@ -59,7 +64,7 @@ const Chatbot = () => {
           headers: {
             "Content-Type": "application/json",
             "xi-api-key": "30db19d4fc2dfc7942bce8f1ed0e2fda",
-          }, 
+          },
           body: JSON.stringify({
             model_id: "eleven_multilingual_v2",
             text: apiResponse.answer,
@@ -217,6 +222,7 @@ const Chatbot = () => {
           authToken
         );
         setLanguages(response);
+        setIsLanguagesLoaded(true);
         console.log(response);
       } catch (error) {
         console.log("Error: ", error);
@@ -245,11 +251,17 @@ const Chatbot = () => {
     }
   };
 
-  const handleMicButtonClick = () => {
-    setIsChatOpen(false);
-    setAudio(1);
-    setElevenAudio(null);
-    startListening();
+  const handleMicButtonClick = (e) => {
+    if (chatMessages.length >= 5) {
+      e.preventDefault();
+      alert("No more free trials");
+      handleCancelButtonClick();
+    } else {
+      setIsChatOpen(false);
+      setAudio(1);
+      setElevenAudio(null);
+      startListening();
+    }
   };
 
   const handleStopRecording = () => {
@@ -290,7 +302,7 @@ const Chatbot = () => {
         );
         elevenLabs(response);
         setChatMessages([...chatMessages, response]);
-        
+
         setValidation(false);
         console.log(response);
       } catch (error) {
@@ -342,6 +354,7 @@ const Chatbot = () => {
         );
         setInfluencerDetails(response.influencerDetails);
         setChatMessages(response.data);
+        setIsChatLoaded(true);
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -352,12 +365,9 @@ const Chatbot = () => {
 
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      divRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, []);
-
-
-
 
   return (
     <>
@@ -367,7 +377,7 @@ const Chatbot = () => {
             <div className={styles.left_items}>
               <h1> &lt; </h1>
               <div>
-                <Image 
+                <Image
                   src={
                     influencerDetails.avatarImageUrl
                       ? influencerDetails.avatarImageUrl
@@ -390,17 +400,23 @@ const Chatbot = () => {
             </button>
           </div>
           <div className={styles.main_container}>
-            <div ref={divRef} className={styles.text_container}>
-              {chatMessages &&
-                chatMessages.map((message, index) => (
-                  <>
-                    <div className={`chat-message user`}>
-                      {message.question}
-                    </div>
-                    <div className={`chat-message bot`}>{message.answer}</div>
-                  </>
-                ))}
-            </div>
+            {isChatLoaded ? (
+              <div ref={divRef} className={styles.text_container}>
+                {chatMessages &&
+                  chatMessages.map((message, index) => (
+                    <>
+                      <div className={`chat-message user`}>
+                        {message.question}
+                      </div>
+                      <div className={`chat-message bot`}>{message.answer}</div>
+                    </>
+                  ))}
+              </div>
+            ) : (
+              <div className={styles.loader}>
+                <Loader />
+              </div>
+            )}
           </div>
           <form
             onSubmit={
@@ -436,7 +452,8 @@ const Chatbot = () => {
           {isVisible && (
             <div ref={languageRef} className={styles.language_box}>
               <h1>Choose Your Language</h1>
-              {languages.map((language, index) => (
+              {isLanguagesLoaded?
+              (languages.map((language, index) => (
                 <button
                   key={index}
                   onClick={() =>
@@ -445,7 +462,11 @@ const Chatbot = () => {
                 >
                   {language.language}
                 </button>
-              ))}
+              )))
+              :
+              (
+                <div className={styles.loader}><Loader/></div>
+              )}
             </div>
           )}
         </div>
@@ -467,13 +488,18 @@ const Chatbot = () => {
                 <p>LISTENING...</p>
               </div>
             )}
-            {isLoading && <LoadingAnimation />}
+            {isLoading && (
+              <div className={styles.processing}>
+                <LoadingAnimation />
+                <div className="mt-12 text-white text-center">Processing..</div>
+              </div>
+            )}
             {elevenAudio && (
               <AudioElevenAnalyzer
-              setValidation={setValidation}
-              handleMicButtonClick={handleMicButtonClick}
-              audio={elevenAudio}
-            />
+                setValidation={setValidation}
+                handleMicButtonClick={handleMicButtonClick}
+                audio={elevenAudio}
+              />
             )}
           </div>
           <div className={styles.control_box}>

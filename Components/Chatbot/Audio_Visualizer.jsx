@@ -31,7 +31,7 @@ const AudioVisualizer = ({ audioData }) => {
           audioData[i] = audioData[i] * 1.25;
         }
 
-        const barHeight = (audioData[i] / 300) * height;
+        const barHeight = (audioData[i] / 325) * height;
 
         // Calculate positions based on whether the index is even or odd
         const lineCenter =
@@ -101,7 +101,7 @@ const AudioVisualizer = ({ audioData }) => {
 
   return (
     <canvas
-      style={{ height: "70%", width: "70%", margin: "auto" }}
+      style={{ height: "100%", width: "100%", margin: "auto" }}
       ref={canvasRef}
     />
   );

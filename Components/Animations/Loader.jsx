@@ -3,7 +3,7 @@ import Lottie from "react-lottie";
 
  
 
-const LoadingAnimation = () => {
+const Loader = () => {
   const [animationState, setAnimationState] = useState({
     isStopped: false,
     isPaused: false,
@@ -29,10 +29,10 @@ const LoadingAnimation = () => {
         options={{
           loop: true,
           autoplay: true,
-          animationData: require("./loading.json"),
+          animationData: require("./Loader.json"),
         }}
-        height={150}
-        width={150}
+        height={250}
+        width={250}
         // isStopped={animationState.isStopped}
         // isPaused={animationState.isPaused}
       />
@@ -40,4 +40,4 @@ const LoadingAnimation = () => {
   );
 };
 
-export default LoadingAnimation;
+export default Loader;

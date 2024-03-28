@@ -16,6 +16,10 @@
   }
 }
 
+.body{
+  height: 100vh;
+  width:100vw;
+}
 
 @layer utilities {
   .text-balance {
@@ -85,9 +89,11 @@ body{
   }
   .bot{
     max-width: 75%;
+    margin-bottom:10px;
   }
   .user{
     max-width: 75%;
+    margin-bottom:10px;
   }
   
 } 

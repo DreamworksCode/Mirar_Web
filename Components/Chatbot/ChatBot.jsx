@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useLayoutEffect,
-} from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "@/Styles/Chat.module.css";
 import Language from "@/public/Chat/language.png";
 import CloseCircle from "@/public/Chat/CloseCircle.png";
@@ -21,6 +15,31 @@ import UseSpeechToText from "../useSpeechToText";
 import LoadingAnimation from "../Animations/LoadingAnimations";
 import AudioElevenAnalyzer from "./AudioElevenAnalyzer";
 import Loader from "../Animations/Loader";
+import German from "@/public/Country_Flag/German@3x.png";
+import Turkish from "@/public/Country_Flag/turkish@3x.png";
+import Polish from "@/public/Country_Flag/polish@3x.png";
+import Romanian from "@/public/Country_Flag/romanian@3x.png";
+import Malay from "@/public/Country_Flag/malay@3x.png";
+import Japanese from "@/public/Country_Flag/japanese@3x.png";
+import Chinese from "@/public/Country_Flag/China@3x.png";
+import Hindi from "@/public/Country_Flag/hindi@3x.png";
+import French from "@/public/Country_Flag/french@3x.png";
+import Spanish from "@/public/Country_Flag/spain@3x.png";
+import Swedish from "@/public/Country_Flag/swedish@3x.png";
+import Arabic from "@/public/Country_Flag/arabic@3x.png";
+import Czech from "@/public/Country_Flag/czech@3x.png";
+import Greek from "@/public/Country_Flag/greek@3x.png";
+import Danish from "@/public/Country_Flag/danish@3x.png";
+import English from "@/public/Country_Flag/english us@3x.png";
+import Korean from "@/public/Country_Flag/korean@3x.png";
+import Portuguese from "@/public/Country_Flag/Prtugese@3x.png";
+import Indonesian from "@/public/Country_Flag/indonesian@3x.png";
+import Finnish from "@/public/Country_Flag/finnish@3x.png";
+import Slovak from "@/public/Country_Flag/slovak@3x.png";
+import Italian from "@/public/Country_Flag/italian@3x.png";
+import Dutch from "@/public/Country_Flag/dutch@3x.png";
+import Croatian from "@/public/Country_Flag/croatia@3x.png";
+import ChatAnimator from "../Animations/ChatAnimator";
 
 const Chatbot = () => {
   const languageRef = useRef();
@@ -37,15 +56,18 @@ const Chatbot = () => {
   const [validation, setValidation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [handleEmptyText, setHandleEmptyText] = useState(false);
-  const [isChatLoaded,setIsChatLoaded]=useState(false);
-  const [isLanguagesLoaded,setIsLanguagesLoaded]=useState(false);
+  const [isChatLoaded, setIsChatLoaded] = useState(false);
+  const [isLanguagesLoaded, setIsLanguagesLoaded] = useState(false);
+  const [authToken, setAuthToken] = useState(null);
   const { isListening, transcript, startListening, stopListening } =
     UseSpeechToText({ continuous: true });
-    let authToken;
-    useEffect(()=>{
-      authToken = localStorage.getItem("token");
-    },[]);
-  const influencer = "65fb71d1da497c8e1087a965";
+  useEffect(() => {
+    const item = localStorage.getItem("token");
+    console.log(item);
+    setAuthToken(item);
+  }, []);
+  console.log(authToken);
+  const influencer = "65f91744da497c8e1086c8af";
 
   useEffect(() => {
     setTextInput(transcript);
@@ -363,14 +385,18 @@ const Chatbot = () => {
         console.log(error);
       }
     };
-    fetchData();
-  }, []);
+    if (authToken !== null) {
+      fetchData();
+    }
+  }, [authToken]);
 
   useEffect(() => {
     if (divRef.current) {
       divRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, []);
+
+  const Country_Images=[default_image,English,Japanese,Chinese,German,Hindi,French,Korean,Portuguese,Italian,Spanish,Indonesian,Dutch,Turkish,Polish,Swedish,default_image,Romanian,Arabic,Czech,Greek,Finnish,Croatian,Slovak,Danish,default_image,default_image,default_image,default_image,default_image,Malay]
 
   return (
     <>
@@ -389,6 +415,7 @@ const Chatbot = () => {
                   className={styles.influencerImage}
                   width={30}
                   height={20}
+                  alt="Avatar Image"
                 />
                 {/* PC */}
               </div>
@@ -407,12 +434,18 @@ const Chatbot = () => {
               <div ref={divRef} className={styles.text_container}>
                 {chatMessages &&
                   chatMessages.map((message, index) => (
-                    <>
+                    <div className={styles.chats_container} key={index}>
                       <div className={`chat-message user`}>
                         {message.question}
                       </div>
-                      <div className={`chat-message bot`}>{message.answer}</div>
-                    </>
+                      {/* {message.answer==="bot"?(
+                        <div className={`chat-message bot-animation`}><ChatAnimator/></div>
+                        ):(
+                          <div className={`chat-message bot`}>{message.answer}</div>
+                          )
+                        } */}
+                        <div className={`chat-message bot`}>{message.answer}</div>
+                    </div>
                   ))}
               </div>
             ) : (
@@ -430,9 +463,10 @@ const Chatbot = () => {
           >
             <div className={styles.bottom_container}>
               <div className={styles.pin_image}>
-                <Image src={Pin} width={30} height={30} />
+                <Image src={Pin} width={30} height={30} alt="Pin image" />
               </div>
               <div className={styles.text_input}>
+                
                 <input
                   type="text"
                   value={newMessage}
@@ -447,6 +481,7 @@ const Chatbot = () => {
                     src={newMessage.trim("").length ? sent : RecordButton}
                     width={50}
                     height={50}
+                    alt="Submit image"
                   />
                 </button>
               </div>
@@ -455,20 +490,31 @@ const Chatbot = () => {
           {isVisible && (
             <div ref={languageRef} className={styles.language_box}>
               <h1>Choose Your Language</h1>
-              {isLanguagesLoaded?
-              (languages.map((language, index) => (
-                <button
-                  key={index}
-                  onClick={() =>
-                    handleChangeLanguage(language.language, language.code)
-                  }
-                >
-                  {language.language}
-                </button>
-              )))
-              :
-              (
-                <div className={styles.loader}><Loader/></div>
+              {isLanguagesLoaded ? (
+                languages.map((language, index) => {
+                  return (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        handleChangeLanguage(language.language, language.code)
+                      }
+                    >
+                      <Image
+                        width={30}
+                        height={30}
+                        alt="Country image"
+                        className={styles.country_image}
+                        src={Country_Images[language.languageId-1]}
+                      />
+                      {/* {console.log(language.language)} */}
+                      {language.language}
+                    </button>
+                  );
+                })
+              ) : (
+                <div className={styles.loader}>
+                  <Loader />
+                </div>
               )}
             </div>
           )}

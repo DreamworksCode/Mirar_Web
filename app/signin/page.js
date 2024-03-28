@@ -6,6 +6,7 @@ import signin from "@/public/SignIn.png";
 import Link from "next/link";
 import API from "../api";
 import {useRouter} from "next/navigation";
+import Loader from "@/Components/Animations/Loader";
 
 const page = () => {
   const router=useRouter();
@@ -37,6 +38,7 @@ const page = () => {
   };
 
   return (
+    <>
     <div className={styles.main_container}>
       <div className={styles.image}>
         <Image src={signin} alt="Sign in image" />
@@ -79,9 +81,10 @@ const page = () => {
         </div>
       </div>
     </div>
-    //     <div className={styles.image}>
+    {/* //     <div className={styles.image}>
     //     <Image src={signup}/>
-    // </div>
+    // </div> */}
+    </>
   );
 };
 

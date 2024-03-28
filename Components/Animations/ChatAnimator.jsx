@@ -3,7 +3,7 @@ import Lottie from "react-lottie";
 
  
 
-const Loader = () => {
+const ChatAnimator = () => {
   const [animationState, setAnimationState] = useState({
     isStopped: false,
     isPaused: false,
@@ -29,10 +29,10 @@ const Loader = () => {
         options={{
           loop: true,
           autoplay: true,
-          animationData: require("./MessageLoader.json"),
+          animationData: require("./ChatAnimation.json"),
         }}
-        height={250}
-        width={250}
+        height={70}
+        width={120}
         // isStopped={animationState.isStopped}
         // isPaused={animationState.isPaused}
       />
@@ -40,4 +40,4 @@ const Loader = () => {
   );
 };
 
-export default Loader;
+export default ChatAnimator;

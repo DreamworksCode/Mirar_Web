@@ -83,6 +83,19 @@ body{
   align-self: flex-end;
 }
 
+.bot-animation{
+  border-top-left-radius: 0;
+  /* background-color: #F5F5F5; */
+  width: auto;
+  max-width: 25%;
+  max-height: 75px;
+  /* background-color: red; */
+  /* background-color: grey; */
+  height: auto;
+  align-items: center;
+  align-self: flex-start;
+}
+
 @media (max-width:600px) {
   .message_time{
     font-size: 12px;

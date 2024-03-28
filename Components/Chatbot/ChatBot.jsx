@@ -41,7 +41,10 @@ const Chatbot = () => {
   const [isLanguagesLoaded,setIsLanguagesLoaded]=useState(false);
   const { isListening, transcript, startListening, stopListening } =
     UseSpeechToText({ continuous: true });
-  const authToken = localStorage.getItem("token");
+    let authToken;
+    useEffect(()=>{
+      authToken = localStorage.getItem("token");
+    },[]);
   const influencer = "65fb71d1da497c8e1087a965";
 
   useEffect(() => {

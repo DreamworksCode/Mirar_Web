@@ -67,7 +67,7 @@ const Chatbot = () => {
     setAuthToken(item);
   }, []);
   console.log(authToken);
-  const influencer = "65f91744da497c8e1086c8af";
+  const influencer = "65fb71d1da497c8e1087a965";
 
   useEffect(() => {
     setTextInput(transcript);
@@ -463,7 +463,7 @@ const Chatbot = () => {
           >
             <div className={styles.bottom_container}>
               <div className={styles.pin_image}>
-                <Image src={Pin} width={30} height={30} alt="Pin image" />
+                <Image src={Pin}  className={styles.pin} alt="Pin image" />
               </div>
               <div className={styles.text_input}>
                 

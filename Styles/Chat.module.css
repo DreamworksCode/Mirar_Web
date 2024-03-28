@@ -102,8 +102,8 @@ backdrop-filter: blur(40px); */
 }
 
 .pin{
-    width: 30px;
-    height: 20px;
+    width: 35px;
+    height: 40px;
 }
 
 .text_input{
@@ -339,7 +339,13 @@ backdrop-filter: blur(40px); */
 
     .language_box{
         width:100%;
-
+    }
+    .text_container{
+        padding: 10px 20px;
+    }
+    .pin{
+        width: 25px;
+        height: 30px;
     }
 }  
 

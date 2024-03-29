@@ -39,10 +39,12 @@ import Slovak from "@/public/Country_Flag/slovak@3x.png";
 import Italian from "@/public/Country_Flag/italian@3x.png";
 import Dutch from "@/public/Country_Flag/dutch@3x.png";
 import Croatian from "@/public/Country_Flag/croatia@3x.png";
-import ChatAnimator from "../Animations/ChatAnimator";
+import File from "@/public/Chat/file_Image2.png";
+import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 
 const Chatbot = () => {
   const languageRef = useRef();
+  const inputRef = useRef(null);
   const divRef = useRef(null);
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
@@ -59,6 +61,7 @@ const Chatbot = () => {
   const [isChatLoaded, setIsChatLoaded] = useState(false);
   const [isLanguagesLoaded, setIsLanguagesLoaded] = useState(false);
   const [authToken, setAuthToken] = useState(null);
+  const [file, setFile] = useState(null);
   const { isListening, transcript, startListening, stopListening } =
     UseSpeechToText({ continuous: true });
   useEffect(() => {
@@ -66,7 +69,7 @@ const Chatbot = () => {
     console.log(item);
     setAuthToken(item);
   }, []);
-  console.log(authToken);
+  // console.log(authToken);
   const influencer = "65fb71d1da497c8e1087a965";
 
   useEffect(() => {
@@ -213,6 +216,7 @@ const Chatbot = () => {
       const message_object = {
         question: message,
         answer: "...",
+        isFileType: file ? true : false,
       };
 
       setChatMessages([...chatMessages, message_object]);
@@ -223,9 +227,13 @@ const Chatbot = () => {
       const formData = new FormData();
       formData.set("influencerId", influencer);
       formData.set("questions", message);
+      if (file) {
+        formData.set("fileUrl", file);
+        setFile(null);
+      }
 
       try {
-        const response = await API.postAPICalling(
+        const response = await API.PostFormAPICalling(
           "/users/askQuestionByLanguageNew",
           formData,
           authToken
@@ -347,6 +355,20 @@ const Chatbot = () => {
     // resetTranscript,
   ]);
 
+  function handleFileButtonClick() {
+    inputRef.current.click();
+  }
+
+  function handleFileChange(e) {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    console.log(selectedFile);
+  }
+
+  const handleFileSelectionContainer = () => {
+    setFile(null);
+  };
+
   useEffect(() => {
     let timeoutId;
     if (isListening) {
@@ -398,7 +420,39 @@ const Chatbot = () => {
     }
   }, []);
 
-  const Country_Images=[default_image,English,Japanese,Chinese,German,Hindi,French,Korean,Portuguese,Italian,Spanish,Indonesian,Dutch,Turkish,Polish,Swedish,default_image,Romanian,Arabic,Czech,Greek,Finnish,Croatian,Slovak,Danish,default_image,default_image,default_image,default_image,default_image,Malay]
+  const Country_Images = [
+    default_image,
+    English,
+    Japanese,
+    Chinese,
+    German,
+    Hindi,
+    French,
+    Korean,
+    Portuguese,
+    Italian,
+    Spanish,
+    Indonesian,
+    Dutch,
+    Turkish,
+    Polish,
+    Swedish,
+    default_image,
+    Romanian,
+    Arabic,
+    Czech,
+    Greek,
+    Finnish,
+    Croatian,
+    Slovak,
+    Danish,
+    default_image,
+    default_image,
+    default_image,
+    default_image,
+    default_image,
+    Malay,
+  ];
 
   return (
     <>
@@ -412,7 +466,7 @@ const Chatbot = () => {
                   src={
                     influencerDetails.avatarImageUrl
                       ? influencerDetails.avatarImageUrl
-                      : default_image
+                      : ProfileCover
                   }
                   className={styles.influencerImage}
                   width={30}
@@ -435,20 +489,30 @@ const Chatbot = () => {
             {isChatLoaded ? (
               <div ref={divRef} className={styles.text_container}>
                 {chatMessages &&
-                  chatMessages.map((message, index) => (
+                  chatMessages.map((message, index) => {
+                    return (
+                      
+                    message.isFileType?(
                     <div className={styles.chats_container} key={index}>
+                      <div className={styles.file_holder}>
+                        <Image src={File} className={styles.chatFileHolder} />
+                      </div>
                       <div className={`chat-message user`}>
                         {message.question}
                       </div>
-                      {/* {message.answer==="bot"?(
-                        <div className={`chat-message bot-animation`}><ChatAnimator/></div>
-                        ):(
-                          <div className={`chat-message bot`}>{message.answer}</div>
-                          )
-                        } */}
-                        <div className={`chat-message bot`}>{message.answer}</div>
+                      <div className={`chat-message bot`}>{message.answer}</div>
                     </div>
-                  ))}
+                    ):(
+                      <div className={styles.chats_container} key={index}>
+                      <div className={`chat-message user`}>
+                        {message.question}
+                      </div>
+                      <div className={`chat-message bot`}>{message.answer}</div>
+                    </div>
+                    )      
+                    )
+                    
+})}
               </div>
             ) : (
               <div className={styles.loader}>
@@ -456,6 +520,24 @@ const Chatbot = () => {
               </div>
             )}
           </div>
+          {file && (
+            <div className={styles.file_selection_container}>
+              <div>
+                <div>
+                  <Image
+                    src={File}
+                    className={styles.file_image}
+                    alt="File Logo"
+                  />
+                </div>
+                {file.name}
+                {/* hey */}
+              </div>
+              <div>
+                <button onClick={handleFileSelectionContainer}>X</button>
+              </div>
+            </div>
+          )}
           <form
             onSubmit={
               newMessage.trim("").length
@@ -465,10 +547,19 @@ const Chatbot = () => {
           >
             <div className={styles.bottom_container}>
               <div className={styles.pin_image}>
-                <Image src={Pin}  className={styles.pin} alt="Pin image" />
+                <button type="button" onClick={handleFileButtonClick}>
+                  <Image src={Pin} className={styles.pin} alt="Pin image" />
+                </button>
+                <input
+                  type="file"
+                  ref={inputRef}
+                  name="file"
+                  id="fileInput"
+                  accept=".pdf,.json,.html,.jpeg,.png"
+                  onChange={handleFileChange}
+                />
               </div>
               <div className={styles.text_input}>
-                
                 <input
                   type="text"
                   value={newMessage}
@@ -505,7 +596,7 @@ const Chatbot = () => {
                         height={30}
                         alt="Country image"
                         className={styles.country_image}
-                        src={Country_Images[language.languageId-1]}
+                        src={Country_Images[language.languageId - 1]}
                       />
                       {/* {console.log(language.language)} */}
                       {language.language}

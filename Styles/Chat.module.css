@@ -84,6 +84,53 @@ backdrop-filter: blur(40px); */
     overflow: auto;
 }
 
+.file_holder{
+    /* width: 45%; */
+    width:auto;
+    /* background-color: red; */
+  border-radius: 10px;
+  padding: 10px;
+  align-self: flex-end;
+}
+
+.chatFileHolder{
+  height: 50px;
+  width: 50px;
+  align-self: flex-end;
+}
+
+.file_selection_container{
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color:black;
+    box-shadow: 0 0 5px grey;
+    /* border-radius: 10px; */
+}
+
+.file_selection_container div{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.file_image{
+    height: 30px;
+    width: 30px;
+    margin-right:20px;
+}
+
+.file_selection_container div button{
+    color:red;
+    font-size: 20px;
+}
+
+.file_selection_container div button:hover{
+    transform: scale(1.02);
+}
+
 .bottom_container{
     height: 15%;
     display: flex;
@@ -99,6 +146,10 @@ backdrop-filter: blur(40px); */
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.pin_image input{
+    display: none;
 }
 
 .pin{

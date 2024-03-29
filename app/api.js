@@ -15,6 +15,14 @@ const api = axios.create({
   },
 });
 
+const formApi=axios.create({
+  baseURL:BASE_URL,
+  headers:{
+    'Content-Type': 'multipart/form-data',
+    "x-api-key":API_KEY
+  }
+})
+
 const setAuthToken = (token) => {
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -23,24 +31,34 @@ const setAuthToken = (token) => {
   }
 };
 
+const setFormAuthToken=(token)=>{
+  if (token) {
+    formApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete formApi.defaults.headers.common['Authorization'];
+  }
+}
+
 
 // Define your API endpoints as methods of this object
 const API = {
-  // Example method for making a GET request
-  getExampleData: async (params) => {
-    try {
-      const response = await api.get('/example-endpoint', { params });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response.data.message || error.message);
-    }
-  },
 
   //POST API for all 
   postAPICalling:async(endPoint,data,token)=>{
     setAuthToken(token);
     try {
         const response=await api.post(endPoint,data);
+        return response.data;
+        
+    } catch (error) {
+        throw new Error(error.response.data.message || error.message);
+    }
+  },
+
+  PostFormAPICalling:async(endPoint,data,token)=>{
+    setFormAuthToken(token);
+    try {
+        const response=await formApi.post(endPoint,data);
         return response.data;
         
     } catch (error) {
@@ -59,17 +77,6 @@ const API = {
     }
   },
 
-  // Example method for making a POST request
-  postExampleData: async (data) => {
-    try {
-      const response = await api.post('/example-endpoint', data);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response.data.message || error.message);
-    }
-  },
-
-  // Add more methods for other API endpoints as needed
 };
 
 export default API;

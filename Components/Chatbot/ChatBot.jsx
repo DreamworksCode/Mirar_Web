@@ -39,7 +39,7 @@ import Slovak from "@/public/Country_Flag/slovak@3x.png";
 import Italian from "@/public/Country_Flag/italian@3x.png";
 import Dutch from "@/public/Country_Flag/dutch@3x.png";
 import Croatian from "@/public/Country_Flag/croatia@3x.png";
-import File from "@/public/Chat/file_Image2.png";
+import File from "@/public/Chat/file_image2.png";
 import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 
 const Chatbot = () => {

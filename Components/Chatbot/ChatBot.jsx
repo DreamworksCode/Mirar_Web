@@ -42,6 +42,7 @@ import Croatian from "@/public/Country_Flag/croatia@3x.png";
 import File from "@/public/Chat/file_image2.png";
 import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 import Link from "next/link";
+import Back from '@/public/Chat/Back3x.png';
 
 const Chatbot = () => {
   const languageRef = useRef();
@@ -479,9 +480,10 @@ const Chatbot = () => {
             <div className={styles.top_container}>
               <div className={styles.left_items}>
                 <Link href="/welcome">
-                  <h1> &lt; </h1>
+                  <Image src={Back} height={20} width={20}/>
                 </Link>
                 <div>
+                  <Link href={`/?id=${influencer}`}>
                   <Image
                     src={
                       influencerDetails.avatarImageUrl
@@ -492,7 +494,8 @@ const Chatbot = () => {
                     width={30}
                     height={20}
                     alt="Avatar Image"
-                  />
+                    />
+                    </Link>
                   {/* PC */}
                 </div>
                 <div className="font-bold">
@@ -569,6 +572,7 @@ const Chatbot = () => {
                   ? handleSubmitText
                   : handleMicButtonClick
               }
+              
             >
               <div className={styles.bottom_container}>
                 <div className={styles.pin_image}>

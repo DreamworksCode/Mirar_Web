@@ -9,8 +9,8 @@ const page = () => {
   return (
     <>
       <div className="hidden md:block lg:block xl:block 2xl:block">
-        <div>
-          <Image src={WelcomeDesktop} alt="Welcome image desktop"/>
+        <div className={styles.welcome_image_container}>
+          <Image src={WelcomeDesktop} className={styles.welcome_image} alt="Welcome image desktop"/>
         </div>
         <div className={styles.welcome_content}>
           <div>Welcome to</div>

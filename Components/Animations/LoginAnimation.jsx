@@ -3,7 +3,7 @@ import Lottie from "react-lottie";
 
  
 
-const ChatAnimator = () => {
+const LoginAnimation = () => {
   const [animationState, setAnimationState] = useState({
     isStopped: false,
     isPaused: false,
@@ -29,10 +29,10 @@ const ChatAnimator = () => {
         options={{
           loop: true,
           autoplay: true,
-          animationData: require("./ChatAnimation.json"),
+          animationData: require("./LoginAnimation.json"),
         }}
-        height={70}
-        width={120}
+        height={250}
+        width={250}
         // isStopped={animationState.isStopped}
         // isPaused={animationState.isPaused}
       />
@@ -40,4 +40,4 @@ const ChatAnimator = () => {
   );
 };
 
-export default ChatAnimator;
+export default LoginAnimation;

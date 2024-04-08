@@ -2,18 +2,21 @@
 import React, { useState } from "react";
 import styles from "@/Styles/Signup.module.css";
 import Image from "next/image";
-import signup from "@/public/Signup.png";
+import signup from "@/public/Signup.webp";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import API from "../api";
+import LoginAnimation from "@/Components/Animations/LoginAnimation";
 
 const page = () => {
   const [credentials,setCredentials]=useState({name:"",email:"",password:"",cpassword:""});
+  const [isLoading,setIsLoading]=useState(false);
   const router = useRouter();
  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const data = {
       name:credentials.name,
       email:credentials.email,
@@ -28,6 +31,7 @@ const page = () => {
       alert("Email already exist");
       console.log("Errors", error);
     }
+    setIsLoading(false);
   };
 
   const handleChange=(e)=>{
@@ -35,9 +39,10 @@ const page = () => {
   }
 
   return (
+    <>
     <div className={styles.main_container}>
       <div className={styles.image}>
-        <Image src={signup} alt="SignUp" />
+        <Image src={signup} alt="SignUp" className={styles.login_image} />
       </div>
       <div className={styles.form}>
         <div className="text-3xl mx-auto text-center">Sign Up</div>
@@ -83,7 +88,7 @@ const page = () => {
               name="cpassword"
             />
             <div className={styles.button}>
-              <button>SIGN UP</button>
+              <button>{isLoading?"Processing...":"SIGN UP"}</button>
             </div>
           </form>
         </div>
@@ -96,9 +101,14 @@ const page = () => {
         </div>
       </div>
     </div>
-    //     <div className={styles.image}>
+    {/* //     <div className={styles.image}>
     //     <Image src={signup}/>
-    // </div>
+    // </div> */}
+    
+    {isLoading && <div className={styles.animation}>
+      <LoginAnimation/>
+    </div>}
+    </>
   );
 };
 

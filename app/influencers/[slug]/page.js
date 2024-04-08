@@ -8,12 +8,12 @@ import image2 from "@/public/x.png";
 import image3 from "@/public/OF icon.png";
 import Styles from "@/Styles/Profile.module.css";
 import Link from "next/link";
-import API from "./api";
+import API from "@/app/api";;
 import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 import { useEffect, useState } from "react";
 import Loader from "@/Components/Animations/Loader";
 
-export default function Home() {
+export default function Home({params}) {
   // const router=useRouter();
   // const {id}=router.query;
   // console.log(id);
@@ -23,8 +23,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   // const influencer = "65f91744da497c8e1086c8af";
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const id = searchParams.get("id");
+    const id=params.slug;
 
     console.log("ID:", id);
     setInfluencer(id);
@@ -107,7 +106,7 @@ export default function Home() {
               <Image src={Share} height={54} width={54} alt="Share" />
             </div>
           </div>
-          <div className="AI_DETAILS ml-24 pt-10">
+          <div className="AI_DETAILS ml-24">
             <div className="text-xl font-semibold  w-[150px] text-center">
               {content ? content.fullName : "{NAME}"}
             </div>

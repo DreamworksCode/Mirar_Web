@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 // const BASE_URL = 'https://your-api-base-url.com'; // Change this to your API base URL
-const BASE_URL="https://api.mirar.ai/api/v1"
+const BASE_URL="https://devapi.mirar.ai/api/v1"
 
 const API_KEY="42bef730-7a95-475e-990f-ec4e3d450b24"
 

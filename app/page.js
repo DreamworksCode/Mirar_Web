@@ -40,6 +40,7 @@ export default function Home() {
             `/auth/getInfluencer/${influencer}`
           );
           setContent(response.data);
+          console.log(response.data);
           setIsLoading(false);
           // console.log(response.data);
         } catch (error) {

@@ -40,20 +40,23 @@ export default function Home() {
             `/auth/getInfluencer/${influencer}`
           );
           setContent(response.data);
+          setIsLoading(false);
           // console.log(response.data);
         } catch (error) {
           localStorage.removeItem('influencer');
           console.log(error);
+          setIsLoading(false);
         }
+
       };
       fetchData();
     }
-    let timeout=setTimeout(()=>{
-      setIsLoading(false);
-    },2000);
-    return () => {
-      clearTimeout(timeout);
-    };
+    // let timeout=setTimeout(()=>{
+    //   setIsLoading(false);
+    // },2000);
+    // return () => {
+    //   clearTimeout(timeout);
+    // };
   }, [influencer]);
 
   const images = [image0, image1, image2, image3];

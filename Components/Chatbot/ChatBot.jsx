@@ -73,6 +73,8 @@ const Chatbot = () => {
     console.log(item);
     setAuthToken(item);
     const user = localStorage.getItem("influencer");
+    // const user="65ff81a4da497c8e108925fc";
+    // console.log(localStorage.getItem("influencer"));
     console.log(user);
     setInfluencer(user);
   }, []);
@@ -426,7 +428,7 @@ const Chatbot = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [authToken, influencer]);
+  }, [authToken,influencer]);
 
   useEffect(() => {
     if (divRef.current) {

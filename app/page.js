@@ -43,7 +43,7 @@ export default function Home() {
           setIsLoading(false);
           // console.log(response.data);
         } catch (error) {
-          localStorage.removeItem('influencer');
+          // localStorage.setItem('influencer',null);
           console.log(error);
           setIsLoading(false);
         }

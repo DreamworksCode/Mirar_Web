@@ -33,7 +33,6 @@ export default function Home() {
     }
     const item = localStorage.getItem("token");
     setAuthToken(item);
-    if (influencer) {
       const fetchData = async () => {
         try {
           const response = await API.getAPICalling(
@@ -48,10 +47,8 @@ export default function Home() {
           console.log(error);
           setIsLoading(false);
         }
-
       };
       fetchData();
-    }
     // let timeout=setTimeout(()=>{
     //   setIsLoading(false);
     // },2000);

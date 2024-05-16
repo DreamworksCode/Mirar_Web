@@ -1,6 +1,5 @@
 "use client";
 
-import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
 import Share from "@/public/Share icon.png";
 import Fave from "@/public/Fave icon.png";
@@ -14,7 +13,6 @@ import API from "./api";
 import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 import { useEffect, useState } from "react";
 import Loader from "@/Components/Animations/Loader";
-import { useKeenSlider } from "keen-slider/react";
 
 export default function Home() {
   // const router=useRouter();

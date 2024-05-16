@@ -53,6 +53,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 20px  10px;
 }
 
 .starting_button{
@@ -94,6 +95,24 @@
     height: 100%;
     width: 100%;
     border-radius: 30px;
+}
+
+.images_container{
+    /* background-color: red; */
+    height: 350px;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.images_gallery{
+    object-fit: cover;
+    width: 25% !important;
+    /* width: 100%; */
+    height: 100%;  
+    /* aspect-ratio: 1/3; */
 }
 
 @media (max-width:992px) {

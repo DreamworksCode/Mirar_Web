@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images:{
-        domains:['api.mirar.ai'],
+        domains:['api.mirar.ai','devapi.mirar.ai'],
     },
 };
 

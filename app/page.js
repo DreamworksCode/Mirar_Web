@@ -1,4 +1,6 @@
 "use client";
+
+import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
 import Share from "@/public/Share icon.png";
 import Fave from "@/public/Fave icon.png";
@@ -12,6 +14,7 @@ import API from "./api";
 import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 import { useEffect, useState } from "react";
 import Loader from "@/Components/Animations/Loader";
+import { useKeenSlider } from "keen-slider/react";
 
 export default function Home() {
   // const router=useRouter();
@@ -21,6 +24,7 @@ export default function Home() {
   const [influencer, setInfluencer] = useState(null);
   const [authToken, setAuthToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [url, setUrl] = useState("");
   // const influencer = "65f91744da497c8e1086c8af";
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -28,27 +32,30 @@ export default function Home() {
 
     console.log("ID:", id);
     setInfluencer(id);
-    if(id!==null){
+    if (id !== null) {
       localStorage.setItem("influencer", id);
     }
     const item = localStorage.getItem("token");
     setAuthToken(item);
-      const fetchData = async () => {
-        try {
-          const response = await API.getAPICalling(
-            `/auth/getInfluencer/${influencer}`
-          );
-          setContent(response.data);
-          console.log(response.data);
-          setIsLoading(false);
-          // console.log(response.data);
-        } catch (error) {
-          // localStorage.setItem('influencer',null);
-          console.log(error);
-          setIsLoading(false);
-        }
-      };
-      fetchData();
+    const fetchData = async () => {
+      try {
+        const response = await API.getAPICalling(
+          `/auth/getInfluencer/${influencer}`
+        );
+        setContent(response.data);
+        console.log(response.data);
+        setIsLoading(false);
+        let a = response.data.youTubeUrl.slice(17);
+        let b = a.split("?");
+        setUrl(b[0]);
+        // console.log(response.data);
+      } catch (error) {
+        // localStorage.setItem('influencer',null);
+        console.log(error);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
     // let timeout=setTimeout(()=>{
     //   setIsLoading(false);
     // },2000);
@@ -95,7 +102,9 @@ export default function Home() {
         </div> */}
             <div className={Styles.profile_image}>
               <Image
-                src={content ? content.avatarImageUrl : ProfileCover}
+                // src={content ? content.avatarImageUrl : ProfileCover}
+                src={content? ((content.avatarImages && content.avatarImages.length>=0 )? content.avatarImages[0].avatarImageUrl:content.avatarImageUrl):ProfileCover}
+                // src={ProfileCover}
                 fill
                 className={Styles.main_profile_image}
                 alt="Profile image"
@@ -207,31 +216,61 @@ export default function Home() {
                 : "To be added later..."}
             </div>
           </div>
-          <div className={Styles.video_container}>
-            <iframe
-              className={Styles.video}
-              src="https://www.youtube.com/embed/YphL3Whh5B0?si=J3VZ9NXRCRi7ua8u"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
+          {content.youTubeUrl && (
+            <div className={Styles.video_container}>
+              <iframe
+                className={Styles.video}
+                // src="https://www.youtube.com/embed/YphL3Whh5B0?si=J3VZ9NXRCRi7ua8u"
+                src={`https://www.youtube.com/embed/${url}`}
+                // src={content.youTubeUrl}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
+          {content.avatarImages && (
+            <div className={Styles.images_container}>
+              {/* <div className="hidden md:block lg:block xl:block 2xl:block">
+                <div
+                  ref={sliderRef}
+                  className={`keen-slider ${Styles["main_slider"]} ${padding_class}`}
+                >
+                {content.avatarImages.map((image,index)=> (
+                  <div className={` keen-slider__slide `} key={index}>
+                    <Image src={image.avatarImageUrl} alt="Influencer uploaded photos" width={200} height={300} className="images_gallery"/>
+                  </div>
+                  )
+                )}
+                </div>
+              </div> */}
+              {content.avatarImages.map((image,index)=> (
+                    <Image src={image.avatarImageUrl}
+                    alt="Influencer uploaded photos" 
+                    className="images_gallery"
+                    width={200}
+                    height={3}
+                    />
+                  )
+                )}
+            </div>
+          )}
           <div className={Styles.BUTTON}>
             <Link href={authToken ? "/welcome" : "/signin"}>
               <button className={Styles.starting_button}>Start</button>
             </Link>
           </div>
         </div>
-      ) : ( isLoading?(
+      ) : isLoading ? (
         <div className={Styles.profile_container}>
-        <div className="TOP_BOX_PROFILE bg-[linear-gradient(180deg,#74e5e6,#367fea)] h-[220px]"></div>
-        <div className={Styles.animation}>
-          <Loader />
+          <div className="TOP_BOX_PROFILE bg-[linear-gradient(180deg,#74e5e6,#367fea)] h-[220px]"></div>
+          <div className={Styles.animation}>
+            <Loader />
+          </div>
         </div>
-      </div>
-      ):
-        (<div className={Styles.profile_container}>
+      ) : (
+        <div className={Styles.profile_container}>
           <div className="TOP_BOX_PROFILE bg-[linear-gradient(180deg,#74e5e6,#367fea)] h-[220px]"></div>
           <div className={Styles.error_message}>
             <h1>OOPS!</h1>
@@ -240,7 +279,7 @@ export default function Home() {
               in the URL is correct and valid
             </p>
           </div>
-        </div>)
+        </div>
       )}
     </>
   );

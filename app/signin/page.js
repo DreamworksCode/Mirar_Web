@@ -52,7 +52,7 @@ const page = () => {
         <div className="text-3xl mx-auto text-center xl:text-5xl 2xl:text-5xl">Sign In</div>
         <div className={styles.form_Container}>
           <form onSubmit={handleSubmit}>
-            <input 
+            <input  
               type="email"
               placeholder="Email"
               value={credentials.email}

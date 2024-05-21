@@ -42,24 +42,32 @@ export default function Home() {
         );
         setContent(response.data);
         console.log(response.data);
-        setIsLoading(false);
+        // setIsLoading(false);
         let a = response.data.youTubeUrl.slice(17);
         let b = a.split("?");
         setUrl(b[0]);
+
+        let timeout = setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+        return () => {
+          clearTimeout(timeout);
+        };
         // console.log(response.data);
       } catch (error) {
         // localStorage.setItem('influencer',null);
         console.log(error);
-        setIsLoading(false);
+        // setIsLoading(false);
+
+        let timeout = setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+        return () => {
+          clearTimeout(timeout);
+        };
       }
     };
     fetchData();
-    // let timeout=setTimeout(()=>{
-    //   setIsLoading(false);
-    // },2000);
-    // return () => {
-    //   clearTimeout(timeout);
-    // };
   }, [influencer]);
 
   const images = [image0, image1, image2, image3];
@@ -97,11 +105,17 @@ export default function Home() {
           <div className=" TOP_BOX_PROFILE bg-[linear-gradient(180deg,#74e5e6,#367fea)] h-[220px]">
             {/* <div className="absolute top-[145px] ml-24">
           <Image src={content.avatarImageUrl} height={150} width={150} alt="Profile image" />
-        </div> */} 
+        </div> */}
             <div className={Styles.profile_image}>
               <Image
                 // src={content ? content.avatarImageUrl : ProfileCover}
-                src={content? ((content.avatarImages && content.avatarImages.length>0 )? content.avatarImages[0].avatarImageUrl:content.avatarImageUrl):ProfileCover}
+                src={
+                  content
+                    ? content.avatarImages && content.avatarImages.length > 0
+                      ? content.avatarImages[0].avatarImageUrl
+                      : content.avatarImageUrl
+                    : ProfileCover
+                }
                 // src={ProfileCover}
                 fill
                 className={Styles.main_profile_image}
@@ -214,7 +228,7 @@ export default function Home() {
                 : "To be added later..."}
             </div>
           </div>
-          {(content.youTubeUrl && content.youTubeUrl.trim(" ")!=="") && (
+          {content.youTubeUrl && content.youTubeUrl.trim(" ") !== "" && (
             <div className={Styles.video_container}>
               <iframe
                 className={Styles.video}
@@ -228,7 +242,7 @@ export default function Home() {
               ></iframe>
             </div>
           )}
-          {(content.avatarImages && content.avatarImages.length>0)  && (
+          {content.avatarImages && content.avatarImages.length > 0 && (
             <div className={Styles.images_container}>
               {/* <div className="hidden md:block lg:block xl:block 2xl:block">
                 <div
@@ -243,15 +257,15 @@ export default function Home() {
                 )}
                 </div>
               </div> */}
-              {content.avatarImages.map((image,index)=> (
-                    <Image src={image.avatarImageUrl}
-                    alt="Influencer uploaded photos" 
-                    className="images_gallery"
-                    width={200}
-                    height={3}
-                    />
-                  )
-                )}
+              {content.avatarImages.map((image, index) => (
+                <Image
+                  src={image.avatarImageUrl}
+                  alt="Influencer uploaded photos"
+                  className="images_gallery"
+                  width={200}
+                  height={3}
+                />
+              ))}
             </div>
           )}
           <div className={Styles.BUTTON}>

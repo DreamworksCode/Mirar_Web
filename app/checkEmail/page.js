@@ -15,7 +15,7 @@ const page = () => {
             <h1>Check Your Email!</h1>
             <p>We have already sent a link to your email to verify your account.</p>
         </div>
-        <div className={styles.account_button}><Link href="/accountVerified"><button>OK</button></Link></div>
+        <div className={styles.account_button}><Link href="/signin"><button>OK</button></Link></div>
       </div>
     </div>
   )

@@ -66,20 +66,61 @@ const Chatbot = () => {
   const [authToken, setAuthToken] = useState(null);
   const [influencer, setInfluencer] = useState(null);
   const [file, setFile] = useState(null);
+  const [isAuthToken,setIsAuthToken]=useState(false);
+  const [isInfluencer,setIsInfluencer]=useState(false);
   const { isListening, transcript, startListening, stopListening } =
     UseSpeechToText({ continuous: true });
   useEffect(() => {
     const item = localStorage.getItem("token");
-    console.log(item);
     setAuthToken(item);
     const user = localStorage.getItem("influencer");
-    // const user="65ff81a4da497c8e108925fc";
-    // console.log(localStorage.getItem("influencer"));
-    console.log(user);
     setInfluencer(user);
+    if(item!==null || user!==null){
+      const fetchData = async () => {
+        try {
+          console.log("FetchData reached");
+          const response = await API.getAPICalling(
+            `/users/getChatMessagesNew?influencerId=${user}&page=1&limit=20`,
+            item
+          );
+          setInfluencerDetails(response.influencerDetails);
+          setChatMessages(response.data);
+          setIsChatLoaded(true);
+          setIsAuthToken(true);
+          setIsInfluencer(true);
+          console.log(response);
+          let timeout = setTimeout(() => {
+            setIsPageLoading(false);
+          }, 500);
+          return () => {
+            clearTimeout(timeout);
+          };
+        } catch (error) {
+          // setIsChatLoaded(true);
+          console.log(error.message);
+          if(error.message==="Unauthorized"){
+            // setIsAuthToken(false);
+            setIsInfluencer(true);
+          }
+          else if(error.message==="Invalid influencerId not found"){
+            // setIsInfluencer(false);
+            setIsAuthToken(true)
+          }
+          let timeout = setTimeout(() => {
+            setIsPageLoading(false);
+          }, 500);
+          return () => {
+            clearTimeout(timeout);
+          };
+          // localStorage.removeItem('influencer');
+        }
+      };
+      fetchData();
+    }
+    else{
+      setIsPageLoading(false);
+    }
   }, []);
-  // console.log(authToken);
-  // const influencer = "65f91744da497c8e1086c8af";
 
   useEffect(() => {
     setTextInput(transcript);
@@ -403,32 +444,33 @@ const Chatbot = () => {
     };
   }, [isListening, transcript, setHandleEmptyText]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await API.getAPICalling(
-          `/users/getChatMessagesNew?influencerId=${influencer}&page=1&limit=20`,
-          authToken
-        );
-        setInfluencerDetails(response.influencerDetails);
-        setChatMessages(response.data);
-        setIsChatLoaded(true);
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-        localStorage.removeItem('influencer');
-      }
-    };
-    if (authToken !== null) {
-      fetchData();
-    }
-    let timeout = setTimeout(() => {
-      setIsPageLoading(false);
-    }, 500);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [authToken,influencer]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await API.getAPICalling(
+  //         `/users/getChatMessagesNew?influencerId=${influencer}&page=1&limit=20`,
+  //         authToken
+  //       );
+  //       setInfluencerDetails(response.influencerDetails);
+  //       setChatMessages(response.data);
+  //       setIsChatLoaded(true);
+  //       console.log(response);
+  //     } catch (error) {
+  //       // setIsChatLoaded(true);
+  //       console.log(error);
+  //       // localStorage.removeItem('influencer');
+  //     }
+  //   };
+  //   if (authToken !== null) {
+  //     fetchData();
+  //   }
+  //   let timeout = setTimeout(() => {
+  //     setIsPageLoading(false);
+  //   }, 500);
+  //   return () => {
+  //     clearTimeout(timeout);
+  //   };
+  // }, [authToken,influencer]);
 
   useEffect(() => {
     if (divRef.current) {
@@ -472,6 +514,8 @@ const Chatbot = () => {
 
   return (
     <>
+    <div className="hidden">
+
       {isPageLoading ? (
         <div className="text-center pt-10">
           <LoadingAnimation />
@@ -491,6 +535,257 @@ const Chatbot = () => {
                       influencerDetails.avatarImageUrl
                         ? influencerDetails.avatarImageUrl
                         : ProfileCover
+                      }
+                    className={styles.influencerImage}
+                    width={30}
+                    height={20}
+                    alt="Avatar Image"
+                    />
+                    </Link>
+                  {/* PC */}
+                </div>
+                <div className="font-bold">
+                  {influencerDetails && influencerDetails.userName}
+                </div>
+              </div>
+              <button onClick={handleGetLanguages}>
+                <div className={styles.language_image} title="Change Language">
+                  {
+                    !isVisible?<Image src={Language} alt="Language selector button image" />:"X"
+                  }
+                </div>
+              </button>
+            </div>
+            <div className={styles.main_container}>
+              {isChatLoaded ? (
+                <div ref={divRef} className={styles.text_container}>
+                  {chatMessages &&
+                    chatMessages.map((message, index) => {
+                      return message.isFileType ? (
+                        <div className={styles.chats_container} key={index}>
+                          <div className={styles.file_holder} >
+                            <Image
+                              src={File}
+                              className={styles.chatFileHolder}
+                              />
+                          </div>
+                          <div className={`chat-message user`}>
+                            {message.question}
+                          </div>
+                          <div className={`chat-message bot`}>
+                            {message.answer}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className={styles.chats_container} key={index}>
+                          <div className={`chat-message user`}>
+                            {message.question}
+                          </div>
+                          <div className={`chat-message bot`}>
+                            {message.answer}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : (
+                <div className={styles.loader}>
+                  <Loader />
+                </div>
+              )}
+            </div>
+            {file && (
+              <div className={styles.file_selection_container}>
+                <div>
+                  <div >
+                    <Image
+                      src={File}
+                      className={styles.file_image}
+                      alt="File Logo"
+                      />
+                  </div>
+                  {file.name}
+                  {/* hey */}
+                </div>
+                <div>
+                  <button onClick={handleFileSelectionContainer}>X</button>
+                </div>
+              </div>
+            )}
+            <form
+              onSubmit={
+                newMessage.trim("").length
+                ? handleSubmitText
+                  : handleMicButtonClick
+              }
+              
+            >
+              <div className={styles.bottom_container}>
+                <div className={styles.pin_image}>
+                  <button type="button" onClick={handleFileButtonClick} title="Add an Attachment">
+                    <Image src={Pin} className={styles.pin} alt="Pin image" />
+                  </button>
+                  <input
+                    type="file"
+                    ref={inputRef}
+                    name="file"
+                    id="fileInput"
+                    accept=".pdf,.json,.html,.jpeg,.png"
+                    onChange={handleFileChange}
+                    />
+                </div>
+                <div className={styles.text_input}>
+                  <input
+                    type="text"
+                    value={newMessage}
+                    name="newMessage"
+                    onChange={handleChange}
+                    placeholder="Message..."
+                    />
+                </div>
+                <div className={styles.internet_image}>
+                  <button type="submit" disabled={validation}>
+                    <Image
+                      src={newMessage.trim("").length ? sent : RecordButton}
+                      className={styles.mic}
+                      alt="Submit image"
+                    />
+                  </button>
+                </div>
+              </div>
+            </form>
+            {isVisible && (
+              <div ref={languageRef} className={styles.language_box}>
+                <h1>Choose Your Language</h1>
+                {isLanguagesLoaded ? (
+                  languages.map((language, index) => {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() =>
+                          handleChangeLanguage(language.language, language.code)
+                        }
+                      >
+                        <Image
+                          width={30}
+                          height={30}
+                          alt="Country image"
+                          className={styles.country_image}
+                          src={Country_Images[language.languageId - 1]}
+                          />
+                        {/* {console.log(language.language)} */}
+                        {language.language}
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div className={styles.loader}>
+                    <Loader />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className={styles.audio_input_container}>
+            <div className={styles.visualizer}>
+              {!audio && !elevenAudio && !isLoading && handleEmptyText && (
+                <div className="d-flex justify-center align-center text-center pt-5 text-white  font-serif flex-col p-3">
+                  {" "}
+                  <p className="text-4xl font-serif m-0">Oops!</p>
+                  <span className="font-serif text-l">
+                    Voice not detect please tap on Re-load button to start
+                    listening...
+                  </span>
+                </div>
+              )}
+              {audio && (
+                <div className={styles.user_voice_listening}>
+                  <p>LISTENING...</p>
+                </div>
+              )}
+              {isLoading && (
+                <div className={styles.processing}>
+                  <LoadingAnimation />
+                  <div className="mt-12 text-white text-center">
+                    Processing..
+                  </div>
+                </div>
+              )}
+              {elevenAudio && (
+                <AudioElevenAnalyzer
+                  setValidation={setValidation}
+                  handleMicButtonClick={handleMicButtonClick}
+                  audio={elevenAudio}
+                />
+              )}
+            </div>
+            <div className={styles.control_box}>
+              {/* <p>0:10</p> */}
+              <div className={styles.controller_button_container}>
+                <div className={styles.refresh}>
+                  <button onClick={handleMicButtonClick}>
+                    <Image src={Refresh} alt="refresh image" />
+                  </button>
+                </div>
+                <div className={styles.mic_container}>
+                  <div className={styles.mic}>
+                    <button onClick={handleStopRecording}>
+                      <Image src={Mic} alt="Mic image" />
+                    </button>
+                  </div>
+                </div>
+                <div onClick={handleCancelButtonClick} className={styles.cross}>
+                  <button>
+                    <Image src={CloseCircle} alt="Cross image" />
+                  </button>
+                </div>
+              </div>
+              <h1>{isListening && "Tap to stop recording"}</h1>
+            </div>
+          </div>
+        )
+      ) : authToken!==null && influencer===null ? (
+        <div className={styles.non_influencer}>
+          <h1>Shhhh!</h1>
+          <p>We are not getting the required id from your device... Make sure you follow the right link to enter the website</p>
+        </div>
+      ) : authToken===null && influencer!==null ? (
+        <div className={styles.non_influencer}>
+          <h1>OOPS!!!</h1>
+          <p>To enjoy this feature you need to <Link className={styles.nav_link} href="/signup">Signup</Link> or <Link className={styles.nav_link} href="/signin">Login </Link> into our website</p>
+        </div>
+      ) : (
+        <div className={styles.non_influencer}>
+          <h1>Failed</h1>
+          <p>It seems like you are not accessing our website through the given source... please follow the steps to enjoy this feature </p>
+        </div>
+      )}
+    </div>
+    {isPageLoading ? (
+        <div className="text-center pt-10">
+          <LoadingAnimation />
+        </div>
+      ) : isAuthToken && isInfluencer ? (
+        isChatOpen ? (
+          <div className={styles.chatbot_container}>
+            <div className={styles.top_container}>
+              <div className={styles.left_items}>
+                <Link href="/welcome">
+                  <Image src={Back} height={20} width={20}/>
+                </Link>
+                <div>
+                  <Link href={`/?id=${influencer}`}>
+                  <Image
+                    src={
+                      influencerDetails
+                    ? influencerDetails.avatarImages && influencerDetails.avatarImages.length > 0
+                      ? influencerDetails.avatarImages[0].avatarImageUrl
+                      : influencerDetails.avatarImageUrl
+                    : ProfileCover
+                      // influencerDetails.avatarImageUrl
+                      //   ? influencerDetails.avatarImageUrl
+                      //   : ProfileCover
                     }
                     className={styles.influencerImage}
                     width={30}
@@ -701,12 +996,12 @@ const Chatbot = () => {
             </div>
           </div>
         )
-      ) : authToken!==null && influencer===null ? (
+      ) : isAuthToken && !isInfluencer ? (
         <div className={styles.non_influencer}>
           <h1>Shhhh!</h1>
           <p>We are not getting the required id from your device... Make sure you follow the right link to enter the website</p>
         </div>
-      ) : authToken===null && influencer!==null ? (
+      ) : !isAuthToken && isInfluencer ? (
         <div className={styles.non_influencer}>
           <h1>OOPS!!!</h1>
           <p>To enjoy this feature you need to <Link className={styles.nav_link} href="/signup">Signup</Link> or <Link className={styles.nav_link} href="/signin">Login </Link> into our website</p>

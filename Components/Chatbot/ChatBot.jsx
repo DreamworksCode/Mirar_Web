@@ -97,7 +97,7 @@ const Chatbot = () => {
       setIsLoading(true);
       console.log("this is elevenlabs: " + apiResponse.answer);
       fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${apiResponse.voiceId}/stream`,
+        `https://api.elevenlabs.io/v1/text-to-speech/${apiResponse.voiceId}/stream?optimize_streaming_latency=2`,
         {
           method: "POST",
           headers: {
@@ -105,7 +105,7 @@ const Chatbot = () => {
             "xi-api-key": "30db19d4fc2dfc7942bce8f1ed0e2fda",
           },
           body: JSON.stringify({
-            model_id: "eleven_multilingual_v2",
+            model_id: "eleven_turbo_v2",
             text: apiResponse.answer,
             // voice_settings: {
             //   stability: 1,
@@ -505,7 +505,7 @@ const Chatbot = () => {
                 </div>
               </div>
               <button onClick={handleGetLanguages}>
-                <div className={styles.language_image}>
+                <div className={styles.language_image} title="Change Language">
                   {
                     !isVisible?<Image src={Language} alt="Language selector button image" />:"X"
                   }
@@ -519,7 +519,7 @@ const Chatbot = () => {
                     chatMessages.map((message, index) => {
                       return message.isFileType ? (
                         <div className={styles.chats_container} key={index}>
-                          <div className={styles.file_holder}>
+                          <div className={styles.file_holder} >
                             <Image
                               src={File}
                               className={styles.chatFileHolder}
@@ -553,7 +553,7 @@ const Chatbot = () => {
             {file && (
               <div className={styles.file_selection_container}>
                 <div>
-                  <div>
+                  <div >
                     <Image
                       src={File}
                       className={styles.file_image}
@@ -578,7 +578,7 @@ const Chatbot = () => {
             >
               <div className={styles.bottom_container}>
                 <div className={styles.pin_image}>
-                  <button type="button" onClick={handleFileButtonClick}>
+                  <button type="button" onClick={handleFileButtonClick} title="Add an Attachment">
                     <Image src={Pin} className={styles.pin} alt="Pin image" />
                   </button>
                   <input

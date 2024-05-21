@@ -97,11 +97,11 @@ export default function Home() {
           <div className=" TOP_BOX_PROFILE bg-[linear-gradient(180deg,#74e5e6,#367fea)] h-[220px]">
             {/* <div className="absolute top-[145px] ml-24">
           <Image src={content.avatarImageUrl} height={150} width={150} alt="Profile image" />
-        </div> */}
+        </div> */} 
             <div className={Styles.profile_image}>
               <Image
                 // src={content ? content.avatarImageUrl : ProfileCover}
-                src={content? ((content.avatarImages && content.avatarImages.length>=0 )? content.avatarImages[0].avatarImageUrl:content.avatarImageUrl):ProfileCover}
+                src={content? ((content.avatarImages && content.avatarImages.length>0 )? content.avatarImages[0].avatarImageUrl:content.avatarImageUrl):ProfileCover}
                 // src={ProfileCover}
                 fill
                 className={Styles.main_profile_image}
@@ -110,7 +110,7 @@ export default function Home() {
             </div>
           </div>
           <div className="SHARE_FAVE_ICON h-[75px] ">
-            <div className="flex pt-2 space-x-2 md:space-x-6 lg:space-x-6 2xl:space-x-6 xl:space-x-6 justify-end items-end md:mx-20 lg:mx-20 xl:mx-20 2xl:mx-20">
+            <div className=" hidden flex pt-2 space-x-2 md:space-x-6 lg:space-x-6 2xl:space-x-6 xl:space-x-6 justify-end items-end md:mx-20 lg:mx-20 xl:mx-20 2xl:mx-20">
               <Image src={Fave} height={54} width={54} alt="Favourite" />
               <Image src={Share} height={54} width={54} alt="Share" />
             </div>
@@ -214,7 +214,7 @@ export default function Home() {
                 : "To be added later..."}
             </div>
           </div>
-          {content.youTubeUrl && (
+          {(content.youTubeUrl && content.youTubeUrl.trim(" ")!=="") && (
             <div className={Styles.video_container}>
               <iframe
                 className={Styles.video}
@@ -228,7 +228,7 @@ export default function Home() {
               ></iframe>
             </div>
           )}
-          {content.avatarImages && (
+          {(content.avatarImages && content.avatarImages.length>0)  && (
             <div className={Styles.images_container}>
               {/* <div className="hidden md:block lg:block xl:block 2xl:block">
                 <div

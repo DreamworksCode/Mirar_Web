@@ -30,18 +30,29 @@
 }
 
 .form_Container {
+  /* width:70%; */
   padding: 40px 10px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* background-color: red; */
+}
+
+.heading_text{
+  /* font: normal normal normal 45px/54px Dystopian; */
+}
+
+.formholder{
+  /* background-color: blue; */
+  width: 60%;
 }
 
 .input {
-  padding: 4px 8px;
+  padding: 8px 16px;
   border-radius: 40px;
   margin: 10px 4px;
   background-color: #f5f5f5;
-  width: 250px;
+  width: 100%;
   /* background-color: blue; */
 }
 
@@ -52,12 +63,13 @@
 }
 
 .button {
-  margin-top: 0px;
-  text-align: center;
+  margin-top: 5px;
+  text-align: center;width:100%;
 }
 
 .button button {
-  width: 250px;
+  /* width: 250px; */
+  width: 100%;
   padding: 10px 5px;
   border-radius: 40px;
   color: white;

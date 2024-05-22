@@ -122,9 +122,9 @@ export default function Home() {
                 alt="Profile image"
               />
             </div>
-          </div>
+          </div> 
           <div className="SHARE_FAVE_ICON h-[75px] ">
-            <div className=" hidden flex pt-2 space-x-2 md:space-x-6 lg:space-x-6 2xl:space-x-6 xl:space-x-6 justify-end items-end md:mx-20 lg:mx-20 xl:mx-20 2xl:mx-20">
+            <div className=" hidden  pt-2 space-x-2 md:space-x-6 lg:space-x-6 2xl:space-x-6 xl:space-x-6 justify-end items-end md:mx-20 lg:mx-20 xl:mx-20 2xl:mx-20">
               <Image src={Fave} height={54} width={54} alt="Favourite" />
               <Image src={Share} height={54} width={54} alt="Share" />
             </div>

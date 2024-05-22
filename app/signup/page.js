@@ -7,11 +7,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import API from "../api";
 import LoginAnimation from "@/Components/Animations/LoginAnimation";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
   const [credentials,setCredentials]=useState({name:"",email:"",password:"",cpassword:""});
   const [isLoading,setIsLoading]=useState(false);
   const router = useRouter();
+  const [message,setMessage]=useState('');
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
  
 
   const handleSubmit = async (e) => {
@@ -25,11 +32,13 @@ const page = () => {
     setCredentials({email:"",name:"",password:"",cpassword:""});
     try {
       const results = await API.postAPICalling("/auth/signup", data);
-      router.replace("/checkEmail");
+      router.push("/checkEmail");
       console.log(results);
     } catch (error) {
-      alert("Email already exist");
-      console.log("Errors", error);
+      setMessage(error.message);
+      handleShow();
+      // alert("Email already exist");
+      // console.log("Errors", error);
     }
     setIsLoading(false);
   };
@@ -47,7 +56,7 @@ const page = () => {
       <div className={styles.form}>
         <div className="text-3xl mx-auto text-center">Sign Up</div>
         <div className={styles.form_Container}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}className={styles.formholder}>
             <input
               type="text"
               placeholder="Name"
@@ -108,6 +117,18 @@ const page = () => {
     {isLoading && <div className={styles.animation}>
       <LoginAnimation/>
     </div>}
+
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{message}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Okay
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

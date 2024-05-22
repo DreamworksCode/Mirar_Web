@@ -29,8 +29,8 @@
 }
 
 .image{
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
 }
 
 
@@ -38,7 +38,7 @@
     transform: scale(1.01);
 }
 
-/* mobile css  */
+/* mobile css  */ 
 .mobile_welcome_content{
     /* background-color: #367fea; */
     display: flex;
@@ -81,12 +81,13 @@
 
 @media (min-width:1590px) {
     .welcome_content{
-        top:40%;
+        top:20%;
         font-size: 60px;
+        right: 20%;
     }
     .image{
-        width: 400px;
-        height: 400px;
+        width: 300px;
+        height: 300px;
     }
     .welcome_content div button{
         font-size: 44px;

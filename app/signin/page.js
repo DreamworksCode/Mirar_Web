@@ -7,11 +7,20 @@ import Link from "next/link";
 import API from "../api";
 import {useRouter} from "next/navigation";
 import LoginAnimation from "@/Components/Animations/LoginAnimation";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
   const router=useRouter();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [isLoading,setIsLoading]=useState(false);
+  const [message,setMessage]=useState('');
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -26,14 +35,16 @@ const page = () => {
     setCredentials({email:"",password:""});
     try {
       const results = await API.postAPICalling("/auth/login", data);
-      router.replace("/welcome");
+      router.push("/welcome");
       let authToken = results.token;
       console.log("Authtoken is :",authToken);
       localStorage.setItem("token", authToken);
       // console.log(results);
     } catch (error) { 
       console.log(error);
-      alert(error);
+      setMessage(error.message);
+      handleShow();
+      // alert(error);
     }
     setIsLoading(false);
   };
@@ -41,7 +52,7 @@ const page = () => {
   const handleOnChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-
+ 
   return (
     <>
     <div className={styles.main_container}>
@@ -49,9 +60,9 @@ const page = () => {
         <Image src={signin} alt="Sign in image" className={styles.login_image} />
       </div>
       <div className={styles.form}>
-        <div className="text-3xl mx-auto text-center xl:text-5xl 2xl:text-5xl">Sign In</div>
+        <div className={`text-3xl mx-auto text-center xl:text-5xl 2xl:text-5xl ${styles.heading_text}`}>Sign In</div>
         <div className={styles.form_Container}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className={styles.formholder}>
             <input  
               type="email"
               placeholder="Email"
@@ -92,6 +103,18 @@ const page = () => {
   {isLoading &&  <div className={styles.animation}>
       <LoginAnimation/>
     </div>}
+
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{message}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Okay
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

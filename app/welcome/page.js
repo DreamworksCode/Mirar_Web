@@ -8,8 +8,8 @@ import Link from "next/link";
 const page = () => {
   return (
     <>
-      <div className="hidden md:block lg:block xl:block 2xl:block">
-        <div className={styles.welcome_image_container}>
+      <div className="hidden sm:block md:block lg:block xl:block 2xl:block">
+        <div className={styles.welcome_image_container}> 
           <Image src={WelcomeDesktop} className={styles.welcome_image} alt="Welcome image desktop"/>
         </div>
         <div className={styles.welcome_content}>
@@ -22,7 +22,7 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div className="md:hidden lg:hidden xl:hidden 2xl:hidden"> 
+      <div className=" sm:hidden md:hidden lg:hidden xl:hidden 2xl:hidden"> 
         <div>
           <Image src={WelcomeMobile} alt="Welcome image mobile" />
         </div>

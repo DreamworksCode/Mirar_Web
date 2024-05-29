@@ -101,3 +101,14 @@
         width: 200px;;
     }
 }
+
+@media (max-width:900px) and (min-width:600px) {
+    .welcome_content{
+        top:15%;
+    }
+    .welcome_image{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}

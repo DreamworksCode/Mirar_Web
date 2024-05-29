@@ -59,6 +59,7 @@ const BUFFER_SIZE = 5; // Adjust the buffer size as needed
 let audioBufferQueue = []; // Queue to store audio buffers
 let isPlaying = false; // Flag to track if audio is currently playing
 let startTime = 0;
+var flag=false;
 let offset = 0;
 
 const Chatbot = () => {
@@ -95,6 +96,15 @@ const Chatbot = () => {
   const [check, setCheck] = useState(false);
   const [device, setDevice] = useState(false);
   const [audioData, setAudioData] = useState(new Uint8Array());
+  // const [flag,setFlag]=useState(false);
+  // const flagSetter=(value)=>{
+  //   flag=value;
+  //   return flag;
+  // }
+  function flagSetter(value){
+    flag=value;
+    return flag;
+  }
   useEffect(() => {
     const item = localStorage.getItem("token");
     setAuthToken(item);
@@ -187,7 +197,7 @@ const Chatbot = () => {
     // Connect the GainNode to the destination (speakers)
     gainNode.connect(audioContext.destination);
     // Set the gain value to increase volume (default is 1)
-    const volume = 2; // Increase the volume by multiplying it by a factor
+    const volume = 1; // Increase the volume by multiplying it by a factor
     gainNode.gain.value = volume;
 
     const source = audioContext.createBufferSource();
@@ -243,6 +253,7 @@ const Chatbot = () => {
           console.log("first time stream");
           console.log(stream);
           isiOS()?playAudioStream(stream):playStreamingAudio(stream);
+          // playAudioStream(stream);
         })
         .catch((error) => {
           setIsLoading(false);
@@ -291,13 +302,14 @@ const Chatbot = () => {
       console.log("Empty Audio Buffer!!!");
       isPlaying = false;
       console.log(check);
-      setElevenAudio(null);
+      setElevenAudio(null); 
       setAudioData(null);
       // setOpenMicModel(false);
-      handleCancelButtonClick();
-      // if(openMicModel){
-      //   handleMicButtonClick();
-      // }
+      // handleCancelButtonClick();
+      console.log(flag);
+      if(flag){
+        handleMicButtonClick();
+      }
     }
   };
 
@@ -419,7 +431,10 @@ const Chatbot = () => {
       setNewMessage("");
     } else {
       
+      flagSetter(false);
+      console.log(flag);
     isiOS()&&audioContextMaker();
+    // audioContextMaker();
       setValidation(true);
       e.preventDefault();
       const message = newMessage;
@@ -506,8 +521,10 @@ const Chatbot = () => {
       handleShow();
       handleCancelButtonClick();
     } else {
-      
+      flagSetter(true);
+      console.log(flag);
     isiOS()&&audioContextMaker();
+    // audioContextMaker();
       setIsChatOpen(false);
       setAudio(1);
       setElevenAudio(null);
@@ -1143,14 +1160,9 @@ const Chatbot = () => {
                     Processing..
                   </div>
                 </div>
-              )}
+              )} 
               {elevenAudio && (
                 <>
-                 {/* <AudioElevenAnalyzer
-                   setValidation={setValidation}
-                   handleMicButtonClick={handleMicButtonClick}
-                   audio={elevenAudio}
-                 /> */}
                 {!device? <AudioElevenAnalyzer
                   setValidation={setValidation}
                   handleMicButtonClick={handleMicButtonClick}

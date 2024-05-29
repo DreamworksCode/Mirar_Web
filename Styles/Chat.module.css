@@ -210,13 +210,14 @@ backdrop-filter: blur(40px); */
 
 .visualizer{
     padding: 20px;
-    padding-top:20%;
+    /* padding-top:20%; */
     margin:auto;
     width: 60%;
     height: 70%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    /* background-color: antiquewhite; */
 }
 
 .user_voice_listening{

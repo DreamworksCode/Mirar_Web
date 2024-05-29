@@ -42,12 +42,24 @@ import Croatian from "@/public/Country_Flag/croatia@3x.png";
 import File from "@/public/Chat/file_image2.png";
 import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 import Link from "next/link";
-import Back from '@/public/Chat/Back3x.png';
-import Cross from '@/public/Chat/cross4.png';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Back from "@/public/Chat/Back3x.png";
+import Cross from "@/public/Chat/cross4.png";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Mobile_Navbar from "../Navbar/Mobile_Navbar";
+import { decoders } from "audio-decode";
 
+//some visualizer content
+let audioContext;
+let streamReader;
+let gainNode;
+
+const BUFFER_SIZE = 5; // Adjust the buffer size as needed
+let audioBufferQueue = []; // Queue to store audio buffers
+let isPlaying = false; // Flag to track if audio is currently playing
+let startTime = 0;
+let offset = 0;
 
 const Chatbot = () => {
   const languageRef = useRef();
@@ -71,20 +83,24 @@ const Chatbot = () => {
   const [authToken, setAuthToken] = useState(null);
   const [influencer, setInfluencer] = useState(null);
   const [file, setFile] = useState(null);
-  const [isAuthToken,setIsAuthToken]=useState(false);
-  const [isInfluencer,setIsInfluencer]=useState(false);
-  const [message,setMessage]=useState('');
+  const [isAuthToken, setIsAuthToken] = useState(false);
+  const [isInfluencer, setIsInfluencer] = useState(false);
+  const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { isListening, transcript, startListening, stopListening } =
     UseSpeechToText({ continuous: true });
+  const [content, setContent] = useState("Initial content");
+  const [check, setCheck] = useState(false);
+  const [device, setDevice] = useState(false);
+  const [audioData, setAudioData] = useState(new Uint8Array());
   useEffect(() => {
     const item = localStorage.getItem("token");
     setAuthToken(item);
     const user = localStorage.getItem("influencer");
     setInfluencer(user);
-    if(item!==null || user!==null){
+    if (item !== null || user !== null) {
       const fetchData = async () => {
         try {
           console.log("FetchData reached");
@@ -107,13 +123,12 @@ const Chatbot = () => {
         } catch (error) {
           // setIsChatLoaded(true);
           console.log(error.message);
-          if(error.message==="Unauthorized"){
+          if (error.message === "Unauthorized") {
             // setIsAuthToken(false);
             setIsInfluencer(true);
-          }
-          else if(error.message==="Invalid influencerId not found"){
+          } else if (error.message === "Invalid influencerId not found") {
             // setIsInfluencer(false);
-            setIsAuthToken(true)
+            setIsAuthToken(true);
           }
           let timeout = setTimeout(() => {
             setIsPageLoading(false);
@@ -125,8 +140,7 @@ const Chatbot = () => {
         }
       };
       fetchData();
-    }
-    else{
+    } else {
       setIsPageLoading(false);
     }
   }, []);
@@ -135,6 +149,59 @@ const Chatbot = () => {
     setTextInput(transcript);
     console.log(textInput);
   }, [transcript]);
+
+  useEffect(() => {
+    logContent(`Platform is ${isiOS() ? "iOS" : "Not iOS"}`);
+    const item=isiOS();
+    setDevice(item);
+    loadDecoders();
+  }, []);
+
+  const isiOS = () => {
+    var iosQuirkPresent = function () {
+      var audio = new Audio();
+
+      audio.volume = 0.5;
+      return audio.volume === 1; // volume cannot be changed from "1" on iOS 12 and below
+    };
+
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    var isAppleDevice = navigator.userAgent.includes("Macintosh");
+    var isTouchScreen = navigator.maxTouchPoints >= 1; // true for iOS 13 (and hopefully beyond)
+
+    return isIOS || (isAppleDevice && (isTouchScreen || iosQuirkPresent()));
+  };
+
+  const [item,setItem]=useState(0);
+
+  const audioContextMaker=()=>{
+    if(!audioContext){
+      // console.log(data_block);
+      // setItem(1);
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      // audioContext = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 'playback', sampleRate: 44100 });
+      // alert("Use effect called");
+    // Create a GainNode
+    gainNode = audioContext.createGain();
+
+    // Connect the GainNode to the destination (speakers)
+    gainNode.connect(audioContext.destination);
+    // Set the gain value to increase volume (default is 1)
+    const volume = 2; // Increase the volume by multiplying it by a factor
+    gainNode.gain.value = volume;
+
+    const source = audioContext.createBufferSource();
+    const audioBuffer = audioContext.createBuffer(1, 1, 22050);
+    source.buffer = audioBuffer;
+    source.connect(gainNode);
+    source.start();
+    logContent("Audio context started...");
+  }
+  }
+
+  const loadDecoders = async () => {
+    await decoders.mp3(); // load & compile decoder
+  };
 
   const handleCancelButtonClick = () => {
     setIsChatOpen(true);
@@ -175,7 +242,7 @@ const Chatbot = () => {
         .then((stream) => {
           console.log("first time stream");
           console.log(stream);
-          playStreamingAudio(stream);
+          isiOS()?playAudioStream(stream):playStreamingAudio(stream);
         })
         .catch((error) => {
           setIsLoading(false);
@@ -188,6 +255,88 @@ const Chatbot = () => {
     },
     [setIsLoading]
   );
+
+  function chunkToArrayBuffer(chunk) {
+    // Convert chunk to Uint8Array
+    const uint8Array = new Uint8Array(chunk);
+
+    // Create ArrayBuffer from Uint8Array
+    return uint8Array;
+  }
+
+  const playNextAudioChunk = () => {
+    if (audioBufferQueue.length > 0) {
+      isPlaying = true;
+      const audioBuffer = audioBufferQueue.shift();
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(gainNode);
+
+      const currentTime = audioContext.currentTime;
+      if (startTime === 0) {
+        startTime = currentTime + 0.1; // slight delay to start the first chunk
+      }
+
+      // Schedule the chunk to play at the correct time
+      source.start(startTime + offset);
+      offset += audioBuffer.duration;
+
+      source.onended = () => {
+        isPlaying = false;
+        playNextAudioChunk();
+      };
+      // console.log(Scheduled buffer of duration ${audioBuffer.duration} seconds at time ${startTime + offset});
+    } else {
+      setValidation(false);
+      console.log("Empty Audio Buffer!!!");
+      isPlaying = false;
+      console.log(check);
+      setElevenAudio(null);
+      setAudioData(null);
+      // setOpenMicModel(false);
+      handleCancelButtonClick();
+      // if(openMicModel){
+      //   handleMicButtonClick();
+      // }
+    }
+  };
+
+  const logContent = (text) => {
+    setContent((prevValue) => {
+      let mainContent = prevValue + "*****" + text;
+      return mainContent;
+    });
+  };
+
+  const playAudioStream = async (stream) => {
+    logContent("in PlayAudioStream");
+    streamReader = stream.getReader();
+    while (true) {
+      const { value, done } = await streamReader.read();
+      console.log(value);
+      if (done) {
+        logContent("Finished downloading chunks.");
+        break;
+      }
+      if (!value) {
+        console.log("Empty chunk.");
+        alert("Empty Chunk");
+        continue;
+      }
+      const arrayBuffer = chunkToArrayBuffer(value);
+      setElevenAudio(1);
+      console.log(new Uint8Array(arrayBuffer));
+      setAudioData(new Uint8Array(arrayBuffer));
+      if (arrayBuffer) {
+        const audioBuffer = await decoders.mp3(arrayBuffer); // decode
+        logContent("buffer downloaded.");
+        audioBufferQueue.push(audioBuffer);
+        
+        if (!isPlaying) playNextAudioChunk();
+      }
+    
+    }
+  };
 
   const playStreamingAudio = async (stream) => {
     const audio = new Audio();
@@ -269,6 +418,8 @@ const Chatbot = () => {
       e.preventDefault();
       setNewMessage("");
     } else {
+      
+    isiOS()&&audioContextMaker();
       setValidation(true);
       e.preventDefault();
       const message = newMessage;
@@ -351,10 +502,12 @@ const Chatbot = () => {
     if (chatMessages.length >= 5) {
       e.preventDefault();
       // alert("No more free trials");
-      setMessage("No more free trials")
+      setMessage("No more free trials");
       handleShow();
       handleCancelButtonClick();
     } else {
+      
+    isiOS()&&audioContextMaker();
       setIsChatOpen(false);
       setAudio(1);
       setElevenAudio(null);
@@ -430,7 +583,7 @@ const Chatbot = () => {
 
   const handleFileSelectionContainer = () => {
     setFile(null);
-  }; 
+  };
 
   useEffect(() => {
     let timeoutId;
@@ -630,7 +783,7 @@ const Chatbot = () => {
     //             ? handleSubmitText
     //               : handleMicButtonClick
     //           }
-              
+
     //         >
     //           <div className={styles.bottom_container}>
     //             <div className={styles.pin_image}>
@@ -775,7 +928,7 @@ const Chatbot = () => {
     //   )}
     // </div>
     <>
-    {isPageLoading ? (
+      {isPageLoading ? (
         <div className="text-center pt-10">
           <LoadingAnimation />
         </div>
@@ -785,27 +938,28 @@ const Chatbot = () => {
             <div className={styles.top_container}>
               <div className={styles.left_items}>
                 <Link href="/welcome">
-                  <Image src={Back} height={20} width={20}/>
+                  <Image src={Back} height={20} width={20} />
                 </Link>
                 <div>
                   <Link href={`/?id=${influencer}`}>
-                  <Image
-                    src={
-                      influencerDetails
-                    ? influencerDetails.avatarImages && influencerDetails.avatarImages.length > 0
-                      ? influencerDetails.avatarImages[0].avatarImageUrl
-                      : influencerDetails.avatarImageUrl
-                    : ProfileCover
-                      // influencerDetails.avatarImageUrl
-                      //   ? influencerDetails.avatarImageUrl
-                      //   : ProfileCover
-                    }
-                    className={styles.influencerImage}
-                    width={30}
-                    height={20}
-                    alt="Avatar Image"
+                    <Image
+                      src={
+                        influencerDetails
+                          ? influencerDetails.avatarImages &&
+                            influencerDetails.avatarImages.length > 0
+                            ? influencerDetails.avatarImages[0].avatarImageUrl
+                            : influencerDetails.avatarImageUrl
+                          : ProfileCover
+                        // influencerDetails.avatarImageUrl
+                        //   ? influencerDetails.avatarImageUrl
+                        //   : ProfileCover
+                      }
+                      className={styles.influencerImage}
+                      width={30}
+                      height={20}
+                      alt="Avatar Image"
                     />
-                    </Link>
+                  </Link>
                   {/* PC */}
                 </div>
                 <div className="font-bold">
@@ -814,9 +968,11 @@ const Chatbot = () => {
               </div>
               <button onClick={handleGetLanguages}>
                 <div className={styles.language_image} title="Change Language">
-                  {
-                    !isVisible?<Image src={Language} alt="Language selector button" />:<Image src={Cross} alt="Cross Button" />
-                  }
+                  {!isVisible ? (
+                    <Image src={Language} alt="Language selector button" />
+                  ) : (
+                    <Image src={Cross} alt="Cross Button" />
+                  )}
                 </div>
               </button>
             </div>
@@ -827,7 +983,7 @@ const Chatbot = () => {
                     chatMessages.map((message, index) => {
                       return message.isFileType ? (
                         <div className={styles.chats_container} key={index}>
-                          <div className={styles.file_holder} >
+                          <div className={styles.file_holder}>
                             <Image
                               src={File}
                               className={styles.chatFileHolder}
@@ -861,7 +1017,7 @@ const Chatbot = () => {
             {file && (
               <div className={styles.file_selection_container}>
                 <div>
-                  <div >
+                  <div>
                     <Image
                       src={File}
                       className={styles.file_image}
@@ -872,11 +1028,14 @@ const Chatbot = () => {
                   {/* hey */}
                 </div>
                 <div>
-                  <button onClick={handleFileSelectionContainer}> <Image
+                  <button onClick={handleFileSelectionContainer}>
+                    {" "}
+                    <Image
                       src={Cross}
                       className={styles.cross_image}
                       alt="Cross button"
-                    /></button>
+                    />
+                  </button>
                 </div>
               </div>
             )}
@@ -886,11 +1045,14 @@ const Chatbot = () => {
                   ? handleSubmitText
                   : handleMicButtonClick
               }
-              
             >
               <div className={styles.bottom_container}>
                 <div className={styles.pin_image}>
-                  <button type="button" onClick={handleFileButtonClick} title="Add an Attachment">
+                  <button
+                    type="button"
+                    onClick={handleFileButtonClick}
+                    title="Add an Attachment"
+                  >
                     <Image src={Pin} className={styles.pin} alt="Pin image" />
                   </button>
                   <input
@@ -922,6 +1084,8 @@ const Chatbot = () => {
                 </div>
               </div>
             </form>
+
+            <Mobile_Navbar />
             {isVisible && (
               <div ref={languageRef} className={styles.language_box}>
                 <p>Choose Your Language</p>
@@ -981,11 +1145,22 @@ const Chatbot = () => {
                 </div>
               )}
               {elevenAudio && (
-                <AudioElevenAnalyzer
+                <>
+                 {/* <AudioElevenAnalyzer
+                   setValidation={setValidation}
+                   handleMicButtonClick={handleMicButtonClick}
+                   audio={elevenAudio}
+                 /> */}
+                {!device? <AudioElevenAnalyzer
                   setValidation={setValidation}
                   handleMicButtonClick={handleMicButtonClick}
                   audio={elevenAudio}
-                />
+                /> :<div className="d-flex justify-center align-center text-center pt-5  font-serif flex-col p-3">
+                {" "}
+                <p className="text-4xl font-serif m-0">Speaking...</p>
+                </div>}
+                
+                </>
               )}
             </div>
             <div className={styles.control_box}>
@@ -1009,27 +1184,45 @@ const Chatbot = () => {
                   </button>
                 </div>
               </div>
-              <p className="text-center">{isListening && "Tap to stop recording"}</p>
+              <p className="text-center">
+                {isListening && "Tap to stop recording"}
+              </p>
             </div>
           </div>
         )
       ) : isAuthToken && !isInfluencer ? (
         <div className={styles.non_influencer}>
           <h1>Shhhh!</h1>
-          <p>We are not getting the required id from your device... Make sure you follow the right link to enter the website</p>
+          <p>
+            We are not getting the required id from your device... Make sure you
+            follow the right link to enter the website
+          </p>
         </div>
       ) : !isAuthToken && isInfluencer ? (
         <div className={styles.non_influencer}>
           <h1>OOPS!!!</h1>
-          <p>To enjoy this feature you need to <Link className={styles.nav_link} href="/signup">Signup</Link> or <Link className={styles.nav_link} href="/signin">Login </Link> into our website</p>
+          <p>
+            To enjoy this feature you need to{" "}
+            <Link className={styles.nav_link} href="/signup">
+              Signup
+            </Link>{" "}
+            or{" "}
+            <Link className={styles.nav_link} href="/signin">
+              Login{" "}
+            </Link>{" "}
+            into our website
+          </p>
         </div>
       ) : (
         <div className={styles.non_influencer}>
           <h1>Failed</h1>
-          <p>It seems like you are not accessing our website through the given source... please follow the steps to enjoy this feature </p>
+          <p>
+            It seems like you are not accessing our website through the given
+            source... please follow the steps to enjoy this feature{" "}
+          </p>
         </div>
       )}
-        <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Error</Modal.Title>
         </Modal.Header>

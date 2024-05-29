@@ -31,7 +31,7 @@ const AudioVisualizer = ({ audioData }) => {
           audioData[i] = audioData[i] * 1.25;
         }
 
-        const barHeight = (audioData[i] / 325) * height;
+        const barHeight = (audioData[i] / 300) * height;
 
         // Calculate positions based on whether the index is even or odd
         const lineCenter =

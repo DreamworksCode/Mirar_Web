@@ -204,6 +204,7 @@ backdrop-filter: blur(40px); */
 }
 
 .audio_input_container{
+    /* height: 80vh; */
     height: 500px;
 }
 
@@ -426,6 +427,11 @@ backdrop-filter: blur(40px); */
         height: 40px;
         width: 40px;
     }
+
+    .audio_input_container{
+        height: 400px;
+    }
+    
 }  
 
 @media (min-width:1600px) {

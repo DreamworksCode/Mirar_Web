@@ -1,0 +1,43 @@
+.navbar_container {
+  display: none;
+  background: rgba(144, 143, 143, 0.443);
+  /* background-color: red; */
+  height: 50px;
+  width: 80%;
+
+  border-radius: 40px;
+  position: absolute;
+  left: 10%;
+  /* bottom:0; */
+  bottom: 18%;
+  backdrop-filter: blur(10px);
+  /* clip-path: path('M 0 0 L 80 0 C 105 0 120 37 150 37 C 180 37 195 0 210 0 L 300 0 L 300 200 L 0 200 Z'); */
+  /* clip-path: path('M -10 0 L 70 0 C 100 0 105 37 130 37 C 150 37 175 0 180 0 L 295 0 L 295 200 L -10 200 Z'); */
+  /* clip-path: path('M -10 0 L 70 0 C 100 0 105 37 130 37 C 150 37 175 0 190 5 L 295 0 L 295 200 L -10 200 Z'); */
+
+
+}
+
+.nav_items {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.nav_items div {
+  height: 25px;
+  width: 25px;
+  margin: 0 10px;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+.mirarLogo{
+    height: 30px;
+    width: 30px;;
+}
+
+@media (max-width: 600px) {
+  .navbar_container {
+    display: block;
+  }
+}

@@ -26,12 +26,17 @@ const Navbar = () => {
     handleClose();
     
   }
+
+  const handleHome=()=>{
+    const item=localStorage.getItem('influencer');
+    router.push(`/?id=${item}`);
+  }
   return (
     <>
     <div className={styles.navbar_container}>
       <div className={styles.mirar_logo}><Image src={Mirar}/></div>
       <div className={styles.nav_items}>
-        <div><Image src={NavHome} alt='Navigation items'/></div>
+        <div title='Home' onClick={handleHome}><Image src={NavHome} alt='Navigation items'/></div>
         <div><Image src={NavNotifcs} alt='Navigation items'/></div>
         <div><Image src={NavMessages} alt='Navigation items'/></div>
         <div><Image src={NavSubscription} alt='Navigation items'/></div>

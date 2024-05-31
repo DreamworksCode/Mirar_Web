@@ -59,8 +59,9 @@ const BUFFER_SIZE = 5; // Adjust the buffer size as needed
 let audioBufferQueue = []; // Queue to store audio buffers
 let isPlaying = false; // Flag to track if audio is currently playing
 let startTime = 0;
-var flag=false;
 let offset = 0;
+var flag=false;
+var message_count=0;
 
 const Chatbot = () => {
   const languageRef = useRef();
@@ -104,6 +105,10 @@ const Chatbot = () => {
   function flagSetter(value){
     flag=value;
     return flag;
+  }
+
+  function message_incrementer(){
+    message_count=message_count+1;
   }
   useEffect(() => {
     const item = localStorage.getItem("token");
@@ -217,6 +222,7 @@ const Chatbot = () => {
     setIsChatOpen(true);
     stopListening();
     setTextInput(null);
+    flagSetter(false);
   };
 
   const elevenLabs = useCallback(
@@ -423,7 +429,9 @@ const Chatbot = () => {
   };
 
   const handleSubmitText = async (e) => {
-    if (chatMessages.length >= 5) {
+    console.log(message_count);
+    // if (chatMessages.length >= 5) {
+    if (message_count >= 5 || chatMessages.length>=5 ) {
       // window.alert("No more free trials");
       setMessage("No More Free Trials");
       handleShow();
@@ -447,6 +455,7 @@ const Chatbot = () => {
       };
 
       setChatMessages([...chatMessages, message_object]);
+      message_incrementer();
 
       console.log("Message is: ", message);
       //Construct the request body
@@ -514,7 +523,9 @@ const Chatbot = () => {
   };
 
   const handleMicButtonClick = (e) => {
-    if (chatMessages.length >= 5) {
+    console.log(message_count);
+    // if (chatMessages.length >= 5) {
+    if (message_count >= 5 || chatMessages.length>=5 ) {
       e.preventDefault();
       // alert("No more free trials");
       setMessage("No more free trials");
@@ -554,6 +565,7 @@ const Chatbot = () => {
       };
 
       setChatMessages([...chatMessages, message_object]);
+      message_incrementer();
 
       console.log("Message is: ", textInput);
       //Construct the request body

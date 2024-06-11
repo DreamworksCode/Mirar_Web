@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Share from "@/public/Share icon.png";
 import Fave from "@/public/Fave icon.png";
@@ -11,8 +10,11 @@ import Styles from "@/Styles/Profile.module.css";
 import Link from "next/link";
 import API from "./api";
 import ProfileCover from "@/public/Chat/profile_cover_image.webp";
-import { useEffect, useState } from "react";
+import { useEffect, useState, version } from "react";
 import Loader from "@/Components/Animations/Loader";
+import AI from "@/public/AI.png";
+import VerifiedAccount from "@/public/VerifiedAccount.png";
+import Head from "next/head";
 
 export default function Home() {
   // const router=useRouter();
@@ -121,23 +123,37 @@ export default function Home() {
                 className={Styles.main_profile_image}
                 alt="Profile image"
               />
+              <Image src={AI} className={Styles.ai_icon} />
             </div>
-          </div> 
+          </div>
           <div className="SHARE_FAVE_ICON h-[75px] ">
             <div className=" hidden  pt-2 space-x-2 md:space-x-6 lg:space-x-6 2xl:space-x-6 xl:space-x-6 justify-end items-end md:mx-20 lg:mx-20 xl:mx-20 2xl:mx-20">
               <Image src={Fave} height={54} width={54} alt="Favourite" />
               <Image src={Share} height={54} width={54} alt="Share" />
             </div>
           </div>
-          <div className="AI_DETAILS ml-24 pt-10">
-            <div className="text-xl font-semibold  w-[150px] text-center">
-              {content ? content.fullName : "{NAME}"}
+          <div className="AI_DETAILS ml-24 pt-6">
+            <div
+              className={`text-xl  font-semibold  w-[150px] text-center flex gap-2  `}
+            >
+              {content
+                ? // <>
+                  content.fullName === ""
+                  ? "{NAME}"
+                  : content.fullName
+                : // {/* </> */}
+                  "{NAME}"}
+              <Image
+                src={VerifiedAccount}
+                className={Styles.verifiedAccount}
+                alt="verified"
+              />
             </div>
             <div className="font-extralight">
               {" "}
               <span className="mr-4">
                 {" "}
-                {content ? content.userName : ""}
+                {content ? ` @${content.userName}` : ""}
               </span>{" "}
               <span> Available Now</span>
             </div>

@@ -10,6 +10,8 @@ import LoginAnimation from "@/Components/Animations/LoginAnimation";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const page = () => {
   const [credentials,setCredentials]=useState({name:"",email:"",password:"",cpassword:""});
@@ -20,6 +22,8 @@ const page = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
  
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible2, setPasswordVisible2] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,6 +51,18 @@ const page = () => {
     setCredentials({...credentials,[e.target.name]:e.target.value});
   }
 
+  const togglePasswordVisibility1 = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const togglePasswordVisibility2 = () => {
+    setPasswordVisible2(!passwordVisible2);
+  };
+
+  const handleFocus=(event)=>{
+    event.target.select();
+  }
+
   return (
     <>
     <div className={styles.main_container}>
@@ -64,6 +80,7 @@ const page = () => {
               className={styles.input}
               name="name"
               onChange={handleChange}
+              onFocus={handleFocus}
               required
             />
             <br />
@@ -77,25 +94,58 @@ const page = () => {
               name="email"
             />
             <br />
+            <div style={{ width:"100%", position: 'relative', display: 'inline-block' }}>
+              
             <input
-              type="password"
+              type={passwordVisible ? "text" : "password"}
               placeholder="Password "
               className={styles.input}
               value={credentials.password}
               required
               onChange={handleChange}
+              
+              style={{ paddingRight: "30px" }}
               name="password"
             />
+            <FontAwesomeIcon
+                  icon={passwordVisible ? faEyeSlash : faEye}
+                  onClick={togglePasswordVisibility1}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                  }}
+                />
+            </div>
             <br />
+            <div style={{ width:"100%", position: 'relative', display: 'inline-block' }}>
+              
             <input
-              type="password"
+              type={passwordVisible2 ? "text" : "password"}
               placeholder="Confirm Password"
               className={styles.input}
               value={credentials.cpassword}
               required
               onChange={handleChange}
+              
+              style={{ paddingRight: "30px" }}
               name="cpassword"
             />
+            <FontAwesomeIcon
+                  icon={passwordVisible2 ? faEyeSlash : faEye}
+                  onClick={togglePasswordVisibility2}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                  }}
+                />
+                
+            </div>
             <div className={styles.button}>
               <button>{isLoading?"Processing...":"SIGN UP"}</button>
             </div>

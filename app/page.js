@@ -15,6 +15,7 @@ import Loader from "@/Components/Animations/Loader";
 import AI from "@/public/AI.png";
 import VerifiedAccount from "@/public/VerifiedAccount.png";
 import Head from "next/head";
+import { urbanistRegular,urbanistMedium,urbanistBold } from "./fonts";
 
 export default function Home() {
   // const router=useRouter();
@@ -132,28 +133,30 @@ export default function Home() {
               <Image src={Share} height={54} width={54} alt="Share" />
             </div>
           </div>
-          <div className="AI_DETAILS ml-24 pt-6">
+          <div className="AI_DETAILS ml-24 xl:pt-6 2xl:pt-6 3xl:pt-6 pt-3 ">
             <div
-              className={`text-xl  font-semibold  w-[150px] text-center flex gap-2  `}
+              className={`text-2xl   font-[500]   text-center flex gap-2  ${urbanistMedium.className} `}
             >
               {content
-                ? // <>
+                ? 
                   content.fullName === ""
                   ? "{NAME}"
                   : content.fullName
-                : // {/* </> */}
+                : 
                   "{NAME}"}
+                  {/* Olivia Rodrigo */}
               <Image
                 src={VerifiedAccount}
                 className={Styles.verifiedAccount}
                 alt="verified"
               />
             </div>
-            <div className="font-extralight">
+            <div className={`font-extralight ${urbanistRegular}`}>
               {" "}
               <span className="mr-4">
                 {" "}
                 {content ? ` @${content.userName}` : ""}
+                {/* @purplelivia.ai */}
               </span>{" "}
               <span> Available Now</span>
             </div>
@@ -284,7 +287,7 @@ export default function Home() {
               ))}
             </div>
           )}
-          <div className={Styles.BUTTON}>
+          <div className={`${Styles.BUTTON} ${urbanistBold.className}`}>
             <Link href={authToken ? "/welcome" : "/signin"}>
               <button className={Styles.starting_button}>Start</button>
             </Link>

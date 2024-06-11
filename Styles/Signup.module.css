@@ -1,3 +1,9 @@
+@font-face {
+  font-family: Dystopian;
+  src: url('../Fonts/fonnts.com-Dystopian_Regular.otf') format('opentype');
+}
+
+
 .main_container {
   background-color: black;
   width: 100%;
@@ -39,6 +45,7 @@
 }
 
 .heading_text{
+  font-family: 'Dystopian',sans-serif;
   /* font: normal normal normal 45px/54px Dystopian; */
 }
 

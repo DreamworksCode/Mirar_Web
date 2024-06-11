@@ -5,6 +5,7 @@ import Image from "next/image";
 import Logo from "@/public/Mirar_Logo.png";
 import styles from "@/Styles/Welcome.module.css";
 import Link from "next/link";
+import { urbanistRegular,urbanistBold } from "../fonts";
 const page = () => {
   return (
     <>
@@ -13,12 +14,12 @@ const page = () => {
           <Image src={WelcomeDesktop} className={styles.welcome_image} alt="Welcome image desktop"/>
         </div>
         <div className={styles.welcome_content}>
-          <div>Welcome to</div>
+          <div className={urbanistRegular.className}>Welcome to</div>
           <div >
             <Image className={styles.image} src={Logo} alt="Mirar logo" />
           </div>
           <div>
-            <Link href="/chatWeb"><button>Start</button></Link>
+            <Link href="/chatWeb"><button className={urbanistBold.className}>START</button></Link>
           </div>
         </div>
       </div>
@@ -32,7 +33,7 @@ const page = () => {
             <Image src={Logo} alt="Mirar logo mobile" />
           </div> 
         </div>
-        <div className={styles.start_button}>
+        <div className={`${styles.start_button} ${urbanistBold.className}`}>
             <button><Link href="/chatWeb">Start</Link></button>
         </div>
       </div>

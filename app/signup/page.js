@@ -12,6 +12,7 @@ import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { urbanistRegular,urbanistBold, nixieOne } from "../fonts";
 
 const page = () => {
   const [credentials,setCredentials]=useState({name:"",email:"",password:"",cpassword:""});
@@ -70,14 +71,14 @@ const page = () => {
         <Image src={signup} alt="SignUp" className={styles.login_image} />
       </div>
       <div className={styles.form}>
-        <div className="text-3xl mx-auto text-center">Sign Up</div>
+        <div className={`text-3xl mx-auto font-[500] text-center ${styles.heading_text} `}>Sign up</div>
         <div className={styles.form_Container}>
           <form onSubmit={handleSubmit}className={styles.formholder}>
             <input
               type="text"
               placeholder="Name"
               value={credentials.name}
-              className={styles.input}
+              className={`${styles.input} ${urbanistRegular.className}`}
               name="name"
               onChange={handleChange}
               onFocus={handleFocus}
@@ -88,7 +89,7 @@ const page = () => {
               type="email"
               placeholder="Email"
               value={credentials.email}
-              className={styles.input}
+              className={`${styles.input} ${urbanistRegular.className}`}
               required
               onChange={handleChange}
               name="email"
@@ -99,7 +100,7 @@ const page = () => {
             <input
               type={passwordVisible ? "text" : "password"}
               placeholder="Password "
-              className={styles.input}
+              className={`${styles.input} ${urbanistRegular.className}`}
               value={credentials.password}
               required
               onChange={handleChange}
@@ -125,7 +126,7 @@ const page = () => {
             <input
               type={passwordVisible2 ? "text" : "password"}
               placeholder="Confirm Password"
-              className={styles.input}
+              className={`${styles.input} ${urbanistRegular.className}`}
               value={credentials.cpassword}
               required
               onChange={handleChange}
@@ -146,15 +147,15 @@ const page = () => {
                 />
                 
             </div>
-            <div className={styles.button}>
+            <div className={`${styles.button} ${urbanistBold.className}`}>
               <button>{isLoading?"Processing...":"SIGN UP"}</button>
             </div>
           </form>
         </div>
 
-        <div className={styles.signin_link}>
+        <div className={`${styles.signin_link} ${urbanistRegular.className}`}>
           <span>Have an account?</span>
-          <Link className="text-blue-500" href="/signin">
+          <Link className="text-blue-500 ml-4" href="/signin">
             Sign in
           </Link>
         </div>

@@ -12,6 +12,7 @@ import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { urbanistRegular,urbanistBold, nixieOne,dystopianRegular } from "../fonts";
 
 const page = () => {
   const router = useRouter();
@@ -76,9 +77,9 @@ const page = () => {
         </div>
         <div className={styles.form}>
           <div
-            className={`text-3xl mx-auto text-center xl:text-5xl 2xl:text-5xl ${styles.heading_text}`}
+            className={`text-3xl mx-auto text-center xl:text-5xl 2xl:text-5xl ${styles.heading_text} `}
           >
-            Sign In
+            Sign in
           </div>
           <div className={styles.form_Container}>
             <form onSubmit={handleSubmit} className={styles.formholder}>
@@ -86,7 +87,7 @@ const page = () => {
                 type="email"
                 placeholder="Email"
                 value={credentials.email}
-                className={styles.input}
+                className={`${styles.input} ${urbanistRegular.className}`}
                 name="email"
                 onChange={handleOnChange}
                 required
@@ -97,7 +98,7 @@ const page = () => {
                 <input
                   type={passwordVisible ? "text" : "password"}
                   placeholder="Password "
-                  className={styles.input}
+                className={`${styles.input} ${urbanistRegular.className}`}
                   required
                   value={credentials.password}
                   name="password"
@@ -118,15 +119,15 @@ const page = () => {
                 />
               </div>
               <br />
-              <div className={styles.button}>
+              <div className={`${styles.button} ${urbanistBold.className}`}>
                 <button>{isLoading ? "Processing..." : "SIGN IN"}</button>
               </div>
             </form>
           </div>
 
-          <div className={styles.signin_link}>
+          <div className={`${styles.signin_link} ${urbanistRegular.className}`}>
             <span>Don't have an account?</span>
-            <Link className="text-blue-500" href="/signup">
+            <Link className="text-blue-500 ml-4" href="/signup">
               Sign up
             </Link>
           </div>

@@ -49,6 +49,7 @@ import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Mobile_Navbar from "../Navbar/Mobile_Navbar";
 import { decoders } from "audio-decode";
+import { urbanistBold, urbanistMedium, urbanistRegular } from "@/app/fonts";
 
 //some visualizer content
 let audioContext;
@@ -991,7 +992,7 @@ const Chatbot = () => {
                   </Link>
                   {/* PC */}
                 </div>
-                <div className="font-bold">
+                <div className={urbanistBold.className}>
                   {influencerDetails && influencerDetails.userName}
                 </div>
               </div>
@@ -1007,7 +1008,7 @@ const Chatbot = () => {
             </div>
             <div className={styles.main_container}>
               {isChatLoaded ? (
-                <div ref={divRef} className={styles.text_container}>
+                <div ref={divRef} className={`${styles.text_container} ${urbanistRegular.className}`}>
                   {chatMessages &&
                     chatMessages.map((message, index) => {
                       return message.isFileType ? (
@@ -1018,10 +1019,10 @@ const Chatbot = () => {
                               className={styles.chatFileHolder}
                             />
                           </div>
-                          <div className={`chat-message user`}>
+                          <div className={`chat-message user ${urbanistRegular.className}`}>
                             {message.question}
                           </div>
-                          <div className={`chat-message bot`}>
+                          <div className={`chat-message bot ${urbanistRegular.className}`}>
                             {message.answer}
                           </div>
                         </div>
@@ -1117,12 +1118,13 @@ const Chatbot = () => {
             <Mobile_Navbar />
             {isVisible && (
               <div ref={languageRef} className={styles.language_box}>
-                <p>Choose Your Language</p>
+                <p className={urbanistBold.className}>Choose Your Language</p>
                 {isLanguagesLoaded ? (
                   languages.map((language, index) => {
                     return (
                       <button
                         key={index}
+                        className={urbanistRegular.className}
                         onClick={() =>
                           handleChangeLanguage(language.language, language.code)
                         }

@@ -44,6 +44,7 @@ import ProfileCover from "@/public/Chat/profile_cover_image.webp";
 import Link from "next/link";
 import Back from "@/public/Chat/Back3x.png";
 import Cross from "@/public/Chat/cross4.png";
+import Cancel from '@/public/Chat/cancel.png';
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -132,6 +133,9 @@ const Chatbot = () => {
           console.log(response);
           let timeout = setTimeout(() => {
             setIsPageLoading(false);
+            if (divRef.current) {
+              divRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+            }
           }, 500);
           return () => {
             clearTimeout(timeout);
@@ -1001,7 +1005,7 @@ const Chatbot = () => {
                   {!isVisible ? (
                     <Image src={Language} alt="Language selector button" />
                   ) : (
-                    <Image src={Cross} alt="Cross Button" />
+                    <Image src={Cancel} alt="Cross Button" />
                   )}
                 </div>
               </button>
@@ -1054,14 +1058,14 @@ const Chatbot = () => {
                       alt="File Logo"
                     />
                   </div>
-                  {file.name}
+                  {file.name.slice(0,20)}
                   {/* hey */}
                 </div>
                 <div>
                   <button onClick={handleFileSelectionContainer}>
                     {" "}
                     <Image
-                      src={Cross}
+                      src={Cancel}
                       className={styles.cross_image}
                       alt="Cross button"
                     />

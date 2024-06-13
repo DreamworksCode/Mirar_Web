@@ -63,11 +63,11 @@
   /* background-color: blue; */
 }
 
-.input:focus,
+/* .input:focus,
 .input:active,
 .input::selection {
   border: 1px solid grey;
-}
+} */
 
 .button {
   margin-top: 5px;

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import "./TestVerify.css";
-import MirarCover from '@/public/Mirar-Cover@3x.png';
-import MirarVertical from '@/public/Mirar_Vertical_Logo.png';
-import Error from '@/public/errors.png';
-import WelcomeAboard from '@/public/Welcome_aboard.png';
+import MirarCover from "@/public/Mirar-Cover@3x.png";
+import MirarVertical from "@/public/Mirar_Vertical_Logo.png";
+import Error from "@/public/errors.png";
+import WelcomeAboard from "@/public/Welcome_aboard.png";
+import MobileCover from "@/public/MobileCover.png";
 import Image from "next/image";
 import { getEmailVerifyService } from "@/app/Services/Services";
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 
-
-const Page = ({params}) => {
+const Page = ({ params }) => {
   const { token } = params;
   console.log(token);
   const [verified, setVerified] = useState(true);
@@ -73,15 +73,15 @@ const Page = ({params}) => {
             </div>
             <div className="mobile_varient">
               <div className="mobile_top_cover">
-                <img
+                <Image
                   className="mobile-mirar-cover"
-                  src="../../../assets/images/Banner Welcome Fan@3x.png"
+                  src={MobileCover}
                   alt="The cover pic for Mirar page"
                 />
                 <div className="mobile_verified">
-                  <img
+                  <Image
                     className="mobile_mirar_logo"
-                    src="../../../assets/images/Mirar_Vertical_Logo.png"
+                    src={MirarVertical}
                     alt="The logo of our Mirar app"
                   />
                   <div className="mobile_verified_text">Account Verified!</div>
@@ -101,10 +101,7 @@ const Page = ({params}) => {
           <>
             <div className=" poppins-medium">
               <div className="wc_top">
-                <Image
-                  src={WelcomeAboard}
-                  alt="Image"
-                />
+                <Image src={WelcomeAboard} alt="Image" />
                 <div className="wc_welcome">
                   <div className="account-verified-text">Welcome aboard!</div>
                   <Image
@@ -123,9 +120,7 @@ const Page = ({params}) => {
                     you:
                   </p>
                   <div>
-                    <button 
-                    onClick={() => setVerified(true)}
-                    >
+                    <button onClick={() => setVerified(true)}>
                       VERIFY EMAIL ADDRESS
                     </button>
                   </div>
@@ -158,7 +153,14 @@ const Page = ({params}) => {
           </div>
         </>
       ) : (
-        <div>Deletedcontent</div>
+        <div className="loader-container">
+          <div>
+            <div className="loader"></div>
+            <p style={{ textAlign: "center", marginTop: "1rem" }}>
+              Verifying your account...
+            </p>
+          </div>
+        </div>
       )}
     </>
   );

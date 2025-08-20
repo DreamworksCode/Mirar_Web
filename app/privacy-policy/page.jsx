@@ -10,31 +10,62 @@ const Page = () => {
           <strong>Effective Date:</strong> August 20, 2025
         </p>
         <p className={styles.text}>
-          At Mirar AI, we take privacy seriously. This Privacy Policy explains
-          how we handle information when you use our services through messaging
-          platforms such as Facebook Messenger and WhatsApp.
+          At Mirar AI, we value your privacy. This Privacy Policy outlines how we
+          handle information collected through Facebook Messenger, Instagram
+          Direct, and WhatsApp when interacting with restaurant businesses using
+          our services.
         </p>
 
-        <h2 className={styles.subheading}>1. No Data Collection</h2>
+        <h2 className={styles.subheading}>1. Information We Collect</h2>
+        <p className={styles.text}>We may collect:</p>
+        <ul className={styles.list}>
+          <li>Customer name, phone number, and message content</li>
+          <li>
+            Business information such as restaurant name, contact details, and
+            menu items
+          </li>
+        </ul>
         <p className={styles.text}>
-          We do not collect, store, or share any personal data from end users
-          who message the restaurants using Mirar AI. Our platform acts purely
-          as a communication tool between customers and restaurants for support
-          purposes.
+          This data is collected only when users interact voluntarily with the
+          restaurants via Meta messaging platforms connected to Mirar AI.
         </p>
 
-        <h2 className={styles.subheading}>2. How We Use the Platform</h2>
+        <h2 className={styles.subheading}>2. How We Use This Data</h2>
+        <p className={styles.text}>We use the collected data to:</p>
+        <ul className={styles.list}>
+          <li>Facilitate customer support on behalf of the restaurant</li>
+          <li>
+            Help restaurants manage conversations, respond to inquiries, and
+            provide better service
+          </li>
+          <li>
+            Store basic chat history and order preferences (if applicable)
+          </li>
+        </ul>
+
+        <h2 className={styles.subheading}>3. No Unnecessary Tracking</h2>
         <p className={styles.text}>
-          Mirar AI is designed to automate customer support for restaurants. It
-          provides quick responses to customer inquiries through messaging
-          channels without saving any personally identifiable information.
+          We do not use cookies or analytics tools to track users across sites.
+          We do not use the data for advertising or resale.
         </p>
 
-        <h2 className={styles.subheading}>3. Third-Party Platforms</h2>
+        <h2 className={styles.subheading}>4. Data Storage and Protection</h2>
         <p className={styles.text}>
-          Our tool operates through platforms like Facebook Messenger and
-          WhatsApp. Any information shared on those platforms is subject to
-          their respective privacy policies:
+          All data is securely stored using industry-standard encryption. Only
+          authorized personnel have access to this data. We do not sell or share
+          your data with any third party.
+        </p>
+
+        <h2 className={styles.subheading}>5. Data Access and Deletion</h2>
+        <p className={styles.text}>
+          Users may request a copy of their data or ask for it to be deleted by
+          contacting us at:{" "}
+          <span className={styles.highlight}>info@mirar.ai</span>
+        </p>
+
+        <h2 className={styles.subheading}>6. Third-Party Platforms</h2>
+        <p className={styles.text}>
+          Mirar AI integrates with the following Meta platforms:
         </p>
         <ul className={styles.list}>
           <li>
@@ -44,7 +75,7 @@ const Page = () => {
               rel="noopener noreferrer"
               className={styles.link}
             >
-              Facebook Privacy Policy
+              Facebook Messenger Privacy Policy
             </a>
           </li>
           <li>
@@ -57,31 +88,17 @@ const Page = () => {
               WhatsApp Privacy Policy
             </a>
           </li>
+          <li>
+            <a
+              href="https://privacycenter.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.link}
+            >
+              Instagram Privacy Policy
+            </a>
+          </li>
         </ul>
-
-        <h2 className={styles.subheading}>4. No Marketing or Tracking</h2>
-        <p className={styles.text}>
-          We do not use cookies, tracking tools, or analytics to monitor users.
-          We do not send marketing messages or collect data for advertising.
-        </p>
-
-        <h2 className={styles.subheading}>5. Contact</h2>
-        <p className={styles.text}>
-          If you have any questions or concerns about this policy, please
-          contact us at:{" "}
-          <span className={styles.highlight}>info@mirar.ai</span>
-        </p>
-        <p className={styles.text}>
-          Visit us at:{" "}
-          <a
-            href="https://www.mirar.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.link}
-          >
-            www.mirar.ai
-          </a>
-        </p>
       </div>
     </div>
   );
